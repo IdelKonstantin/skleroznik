@@ -7,11 +7,6 @@
 #include <iosfwd>
 #include <type_traits>
 
-namespace com_def {
-
-
-}
-
 namespace fastlog
 {
     const std::string LOG_INFO_TAG = "ИНФОРМАЦИЯ";
