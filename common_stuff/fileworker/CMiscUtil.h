@@ -2,7 +2,6 @@
 #define BASEDAEMONTEMPLATE_CMISCUTIL_H
 #include <string>
 
-
 class CMiscUtil {
 public:
     static bool checkIfDirExists(const std::string &sPath);
@@ -22,9 +21,4 @@ public:
     // Удаляет финальный слэш из переданного файлового пути sPath
     static void removeTrailingSlashFromPath(std::string &sPath);
 };
-
-
-
-
-
 #endif //BASEDAEMONTEMPLATE_CMISCUTIL_H
