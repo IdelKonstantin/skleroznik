@@ -208,12 +208,12 @@ auto ammoExtractor::saveToSqlite() {
         rc = sqlite3_exec(db, ss.str().c_str(), callback, 0, &zErrMsg);
         
         if( rc!=SQLITE_OK ) {
-            
-			std::cerr << "Ошибка SQL: " << zErrMsg << std::endl;
-			sqlite3_free(zErrMsg);
-			sqlite3_close(db);
-			return errCode::CANT_INSERT_INFO;
-		}
+
+            std::cerr << "Ошибка SQL: " << zErrMsg << std::endl;
+            sqlite3_free(zErrMsg);
+            sqlite3_close(db);
+            return errCode::CANT_INSERT_INFO;
+        }
     }
     
     sqlite3_close(db);   
