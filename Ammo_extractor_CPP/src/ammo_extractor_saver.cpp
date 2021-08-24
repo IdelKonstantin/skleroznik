@@ -25,7 +25,7 @@ auto ammoExtractor::getRawJsonStrings() {
 
     try{
 
-        if(fin) {
+        if(fin.is_open()) {
 
             while(!fin.eof()) {
                     
@@ -35,11 +35,12 @@ auto ammoExtractor::getRawJsonStrings() {
                     dummy.shrink_to_fit();
                     buffer.append(std::move(dummy));
                 }
-            }           
+            } 
+            
+            fin.close();          
         }
         else {
             
-            fin.close();
             std::cerr << "Не удается прочитать JSON-файл..." << std::endl;
             return errCode::CANT_READ_JSON;
         }
@@ -51,7 +52,6 @@ auto ammoExtractor::getRawJsonStrings() {
         return errCode::CANT_READ_JSON;
     }
     
-    fin.close();
     return errCode::DONE;
 }
 
