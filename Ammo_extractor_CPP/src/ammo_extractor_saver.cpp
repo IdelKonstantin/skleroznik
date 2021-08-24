@@ -222,19 +222,19 @@ auto ammoExtractor::saveToSqlite() {
 
 ammo_error_t ammoExtractor::parseAndStore() {
 
-	ammo_error_t result{errCode::DONE};
+    ammo_error_t result{errCode::DONE};
 
-	if((result = getRawJsonStrings()) != errCode::DONE) {
+    if((result = getRawJsonStrings()) != errCode::DONE) {
 
-		return result;
-	}
+        return result;
+    }
 
-	if((result = parseJSONStrings()) != errCode::DONE) {
+    if((result = parseJSONStrings()) != errCode::DONE) {
 
-		return result;
-	}
+        return result;
+    }
 
-	result = saveToSqlite();
+    result = saveToSqlite();
 
-	return result;
+    return result;
 }
