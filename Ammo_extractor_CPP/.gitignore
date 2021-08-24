@@ -1,0 +1,8 @@
+*.sqlite
+*.json
+*.sql
+CMakeCache.txt
+CMakeFiles/
+JSON_EXTRACTOR
+Makefile
+*.cmake

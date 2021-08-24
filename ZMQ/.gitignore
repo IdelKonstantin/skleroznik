@@ -1,0 +1,12 @@
+*.sqlite
+*.json
+*.sql
+*.log
+CMakeCache.txt
+CMakeFiles/
+Makefile
+*.cmake
+s2_server
+s2_client
+*.o
+__pycache__

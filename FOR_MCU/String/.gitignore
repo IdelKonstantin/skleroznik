@@ -1,0 +1,16 @@
+test_String
+.cproject
+.project
+*.swp
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+*.out
+*.o
+exec
+*.a
+*.ods#
+*.ods
+*.csv
+
