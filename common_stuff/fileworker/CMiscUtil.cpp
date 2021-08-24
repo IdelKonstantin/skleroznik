@@ -1,7 +1,3 @@
-//
-// Created by olobach on 14.01.2020.
-//
-
 #include <iostream>
 #include <CMiscUtil.h>
 #include <sys/stat.h>

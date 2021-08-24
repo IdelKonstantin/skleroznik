@@ -1,7 +1,3 @@
-//
-// Created by olobach on 14.01.2020.
-//
-
 #ifndef BASEDAEMONTEMPLATE_CMISCUTIL_H
 #define BASEDAEMONTEMPLATE_CMISCUTIL_H
 #include <string>

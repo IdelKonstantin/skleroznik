@@ -1,4 +1,3 @@
-
 #include <CFastLog.h>
 #include <cstring>
 #include <chrono>
