@@ -2,7 +2,7 @@
 
 serverLogger::serverLogger() {
 
-	this->addTimepointToPath();
+    this->addTimepointToPath();
 }
 
 time_t serverLogger::getCurrentTimepoint() {
@@ -37,15 +37,15 @@ void serverLogger::addTimepointToPath() {
 
 void serverLogger::logoutData(const std::string& serviceMessage, const log_type_t logType) {
 
-	std::ofstream fout;
+    std::ofstream fout;
 
-	fout.open(this->path, std::fstream::out | std::ofstream::app);
+    fout.open(this->path, std::fstream::out | std::ofstream::app);
 
     if(!fout.is_open()) {
 
         std::cerr << "Can't open file for logging..." << std::endl;
-		return;
-	}
+        return;
+    }
 
     this->logLine.clear();
 
@@ -69,12 +69,12 @@ void serverLogger::logoutData(const std::string& serviceMessage, const log_type_
     logLine.append("]\n");
 
     try{  
-    	
-    	fout << logLine << "\n";
+        
+        fout << logLine << "\n";
         fout.close();
     }
     catch(...) {
 
-    	fout.close();
+        fout.close();
     }
 }

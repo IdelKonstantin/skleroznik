@@ -10,35 +10,35 @@ json_error_t jsonToS2helper::parseJsonRequest(const std::string& data) {
 
     if (!reader->parse(data.c_str(), data.c_str() + data.length(), &root, &err)) {
 
-		this->errorCode = json_err::WRONG_JSON;    
+        this->errorCode = json_err::WRONG_JSON;    
         return this->errorCode;  
     }
 
     try {
 
-    	this->parseForMeteoData(root);
-    	this->parseForBulletData(root);
-    	this->parseForRifleData(root);
-    	this->parseForScopeData(root);
-    	this->parseForInputs(root);
-		this->parseForOptions(root);
+        this->parseForMeteoData(root);
+        this->parseForBulletData(root);
+        this->parseForRifleData(root);
+        this->parseForScopeData(root);
+        this->parseForInputs(root);
+        this->parseForOptions(root);
     }
     catch(...) {
     
-		this->errorCode = json_err::PARSING_FAILURE;    
+        this->errorCode = json_err::PARSING_FAILURE;    
         return this->errorCode; 
     }
 
-	return json_err::DONE;
+    return json_err::DONE;
 }
 
 void jsonToS2helper::parseForMeteoData(const Json::Value& root) {
 
-	this->meteo.T = static_cast<decltype(this->meteo.T)>(root["Meteo"]["T"].asInt());
-	this->meteo.P = static_cast<decltype(this->meteo.P)>(root["Meteo"]["P"].asUInt());
-	this->meteo.H = static_cast<decltype(this->meteo.H)>(root["Meteo"]["H"].asUInt());
-	this->meteo.windSpeed = static_cast<decltype(this->meteo.windSpeed)>(root["Meteo"]["windSpeed"].asDouble());
-	this->meteo.windDir = static_cast<decltype(this->meteo.windDir)>(root["Meteo"]["windDir"].asUInt());
+    this->meteo.T = static_cast<decltype(this->meteo.T)>(root["Meteo"]["T"].asInt());
+    this->meteo.P = static_cast<decltype(this->meteo.P)>(root["Meteo"]["P"].asUInt());
+    this->meteo.H = static_cast<decltype(this->meteo.H)>(root["Meteo"]["H"].asUInt());
+    this->meteo.windSpeed = static_cast<decltype(this->meteo.windSpeed)>(root["Meteo"]["windSpeed"].asDouble());
+    this->meteo.windDir = static_cast<decltype(this->meteo.windDir)>(root["Meteo"]["windDir"].asUInt());
 }
 
 void jsonToS2helper::parseForBulletData(const Json::Value& root) {
