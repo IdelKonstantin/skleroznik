@@ -10,7 +10,6 @@ public:
 
     static bool createDirectoryIfNotExist(const std::string &sPath);
 
-
     static void addTrailingSlashToPath(std::string &sPath);
 
     static size_t getTotalCountFilesInDirectory(const std::string &sPath);
