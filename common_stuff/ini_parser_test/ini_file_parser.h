@@ -22,7 +22,7 @@
 class iniFileParser {
 
 private:
-	std::map<std::string, std::string> iniFileContent{}; //это полный аналог db::connparams_t
+	std::map<std::string, std::string> iniFileContent{};
 	std::string iniFilePath{};
 
 public:
@@ -36,7 +36,7 @@ public:
 		std::ifstream fin;
 		fin.open(iniFilePath);
 
-		if(!fin) {
+		if(!fin.is_open()) {
 
 			return false;		
 		}
@@ -62,7 +62,7 @@ public:
 						removeWhitespaces(paramName);
 						removeWhitespaces(paramValue);
 
-						/* Добавление пар "имя - значение" в словарь параметров ТБД аналогичный db::connparams_t */
+						/* Добавление пар "имя - значение" в словарь параметров */
 						iniFileContent.insert(std::make_pair(paramName, paramValue));
 					}
 				}
