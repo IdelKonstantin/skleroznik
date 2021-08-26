@@ -14,7 +14,7 @@ public:
 };
 
 
-class Builder{
+class Builder {
 
 public:
     
@@ -25,7 +25,7 @@ public:
 };
 
 
-class ConcreteBuilder : public Builder{
+class ConcreteBuilder : public Builder {
 
 private:
     /* Not used yet */
@@ -34,15 +34,15 @@ private:
 public:
     ConcreteBuilder() = default;
 
-    void ProducePartA() const override{
+    void ProducePartA() const override {
         std::cout << "PartA" << std::endl;
     }
 
-    void ProducePartB() const override{
+    void ProducePartB() const override {
         std::cout << "PartB" << std::endl;
     }
 
-    void ProducePartC() const override{
+    void ProducePartC() const override {
         std::cout << "PartC" << std::endl;
     }
 
