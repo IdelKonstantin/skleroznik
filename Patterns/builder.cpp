@@ -1,6 +1,7 @@
 #include <iostream>
 #include <memory>
 
+/* Not used yet */
 class Product {
 
 public:
@@ -27,23 +28,25 @@ public:
 class ConcreteBuilder : public Builder{
 
 private:
+	/* Not used yet */
     std::unique_ptr<Product> product{};
 
 public:
     ConcreteBuilder() = default;
 
-    void ProducePartA()const override{
+    void ProducePartA() const override{
         std::cout << "PartA" << std::endl;
     }
 
-    void ProducePartB()const override{
+    void ProducePartB() const override{
         std::cout << "PartB" << std::endl;
     }
 
-    void ProducePartC()const override{
+    void ProducePartC() const override{
         std::cout << "PartC" << std::endl;
     }
 
+    /* Not used yet */
     std::unique_ptr<Product>&& GetProduct() {
 
         return std::move(this->product);
@@ -81,6 +84,7 @@ public:
 	}
 };
 
+
 int main() {
 
 	ConcreteBuilder cb;
@@ -89,6 +93,3 @@ int main() {
 	dir.buildConfigBase();
 	dir.buildConfigAll();
 }
-
-
-
