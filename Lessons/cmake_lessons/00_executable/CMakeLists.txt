@@ -14,4 +14,4 @@ add_executable(${PROJECT_NAME}
 target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ./include/) # <- но правильнее просто указать директорию с хедерами...
 
 # Устанавливаем бинарный файл (sudo make install в консоли где Makefile)
-install(TARGETS ${PROJECT_NAME} DESTINATION /opt/) 
+install(TARGETS ${PROJECT_NAME} DESTINATION /usr/local/bin)

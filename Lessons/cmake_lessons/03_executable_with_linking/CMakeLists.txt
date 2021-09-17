@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.7)
 project(exec_with_linking)
 
-add_compile_options(-std=c++11 -g -O0 -static -Wall -Wextra)
+add_compile_options(-std=c++11 -g -O0 -Wall -Wextra)
 
 message("Конфигурирую сборку исполняемлого файла [${PROJECT_NAME}]")
 
