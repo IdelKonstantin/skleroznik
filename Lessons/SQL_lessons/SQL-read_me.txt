@@ -31,10 +31,10 @@
 =====ИЗВЛЕЧЕНИЕ=====
 1) Извлечение данных из таблиц
 
-  SELECT * FROM Table;                  							-- выбор всех столбцов
-  SELECT row1, row2, row3 FROM Table;   							# выбор определенных столбцов
-  SELECT DISTINCT row1 FROM Table;      							/* вывести только уникальные записи для столбца */
-  SELECT DISTINCT row1 FROM Table LIMIT 10 OFFSET 1; 	-- вывод ограниченного числа записи со смещением (вторая строка, а не первая);
+  SELECT * FROM Table;			-- выбор всех столбцов
+  SELECT row1, row2, row3 FROM Table;	# выбор определенных столбцов
+  SELECT DISTINCT row1 FROM Table;	/* вывести только уникальные записи для столбца */
+  SELECT DISTINCT row1 FROM Table LIMIT 10 OFFSET 1;	-- вывод ограниченного числа записи со смещением (вторая строка, а не первая);
 
 2) Сортировка
 
@@ -48,7 +48,7 @@
 
 		SELECT * FROM Table WHERE row1 = something;
 		SELECT * FROM Table WHERE row1 BETWEEN 5 AND 10;
-		SELECT * FROM Table WHERE row1 IS NULL;						-- ACHTUNG! SELECT * FROM Table WHERE row = NULL; НЕ РАБОТАЕТ(!)		
+		SELECT * FROM Table WHERE row1 IS NULL;			-- ACHTUNG! SELECT * FROM Table WHERE row = NULL; НЕ РАБОТАЕТ(!)		
 	
 		Допустимые операторы:
 
@@ -71,9 +71,9 @@
 	SELECT * FROM Table WHERE row1 LIKE '%someth%';
 	SELECT * FROM Table WHERE row1 LIKE 's%g';
 	SELECT * FROM Table WHERE row1 LIKE '__mething';		
-	SELECT * FROM Table WHERE row1 LIKE '[st]%';					-- найти все строки начинающиеся с символов s и t
-	SELECT * FROM Table WHERE row1 LIKE '[^s]%';					-- найти все строки кроме начинающихся с символов s и t
-	SELECT * FROM Table WHERE NOT row1 LIKE '[st]%';			-- найти все строки начинающиеся с символов s и t (аналог)
+	SELECT * FROM Table WHERE row1 LIKE '[st]%';		-- найти все строки начинающиеся с символов s и t
+	SELECT * FROM Table WHERE row1 LIKE '[^s]%';		-- найти все строки кроме начинающихся с символов s и t
+	SELECT * FROM Table WHERE NOT row1 LIKE '[st]%';	-- найти все строки начинающиеся с символов s и t (аналог)
 
 	Допустимые логические операции при расширенной фильтрации:
 
@@ -86,9 +86,10 @@
 
 		IN/NOT IN 
 
-		SELECT * FROM Table WHERE row1 IN ('something', 'something_else');				-- в скобках может быть подзапрос SELECT и т.д.
-		SELECT * FROM Table WHERE row1 NOT IN ('something', 'something_else');		/* NOT может использоваться с BETWEEN и всегда должен стоять 
-																																							перед тем, что он отрицает */
+		SELECT * FROM Table WHERE row1 IN ('something', 'something_else');	-- в скобках может быть подзапрос SELECT и т.д.
+		SELECT * FROM Table WHERE row1 NOT IN ('something', 'something_else')	/* NOT может использоваться с BETWEEN и всегда должен стоять 
+																																			
+перед тем, что он отрицает */
 
 4) Вычислимые поля
 
@@ -105,11 +106,11 @@
 
 	Текстовые
 
-		LEFT() / RIGHT()		-- левая / правая часть строки
-		LOWER() / UPPER()		-- перевод в нижний (верхний регистр)
-		LTRIM() / RTRIM()		-- удаление пробельных символов слева(справа)
-		LENGTH() / LEN()		-- длина строки
-		SOUNDEX()						-- фонетическое подобие (как звучит строка)
+		LEFT() / RIGHT()	-- левая / правая часть строки
+		LOWER() / UPPER()	-- перевод в нижний (верхний регистр)
+		LTRIM() / RTRIM()	-- удаление пробельных символов слева(справа)
+		LENGTH() / LEN()	-- длина строки
+		SOUNDEX()		-- фонетическое подобие (как звучит строка)
 
 		SELECT UPEER(row1) AS new_title FROM table WHERE row2 = 42;
 
@@ -132,14 +133,14 @@
 		SUM()
 
 		SELECT AVG(row1) AS average FROM table; -- подсчет среднего, строки с NULL игнорируются
-		SELECT COUNT(*) FROM table; 						-- подсчет общего количества строк, включая NULL
-		SELECT COUNT(row1) FROM table;					-- подсчет количества строк для row1 без NULL
+		SELECT COUNT(*) FROM table;		-- подсчет общего количества строк, включая NULL
+		SELECT COUNT(row1) FROM table;		-- подсчет количества строк для row1 без NULL
 		SELECT SUM(row1*constant) AS sum_multiplied FROM table; -- подсчет суммы перемноженной на константу и т.д.
 
 		Можно использовать DISTINCT:
 
-		SELECT SUM(DISTINCT row1) AS sum_unique FROM table; -- подсчет суммы уникальных элементов
-		SELECT COUNT(DISTINCT row1) AS sum_unique FROM table; -- подсчет количества уникальных элементов
+		SELECT SUM(DISTINCT row1) AS sum_unique FROM table;	-- подсчет суммы уникальных элементов
+		SELECT COUNT(DISTINCT row1) AS sum_unique FROM table;	-- подсчет количества уникальных элементов
 
 		И комбинировать:
 
