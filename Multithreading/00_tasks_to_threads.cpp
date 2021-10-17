@@ -42,7 +42,8 @@ int main() {
     // при этом, если потом вызвать th1.join() программа упадет или кинет исключение (!)
 
     std::string name{"Nikita"};
-    std::thread t1(func, std::cref(name));
+    std::thread t1(func, std::cref(name)); //Так же для получения результатов
+                                           //можно применять std::future/std::promise
 
     std::thread t2(task{});
 

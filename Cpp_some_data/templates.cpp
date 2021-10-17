@@ -182,3 +182,16 @@ public:
 		//do some at destruction
 	}
 };
+
+
+//========================================================================
+//Вариадический шаблон
+
+template<typename T, typename... Args>
+void foo(const T& a, const Args& ... b) {
+
+	std::cout << std::sizeof...(Args) << std::endl;
+	//Some code here
+}
+
+foo("Hi", 52, 5.0F);
