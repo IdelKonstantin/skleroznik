@@ -1,0 +1,6 @@
+server
+client
+CMakeFiles/
+*.cmake
+CMakeCache.txt
+Makefile
