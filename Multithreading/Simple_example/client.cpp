@@ -66,7 +66,7 @@ int main (int argc, char *argv[]) {
 
     const std::string myName{argv[3]};
 
-    std::cout << "Чат запущен от имени прользвоателя [" << myName << "]" << std::endl;
+    std::cout << "Чат запущен от имени пользователя [" << myName << "]" << std::endl;
 
     std::thread getter{receiveMessages, receiver, myName};
     std::thread pooker{sendChatMessages, publisher, myName};

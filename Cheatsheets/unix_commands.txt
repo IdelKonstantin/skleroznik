@@ -1,0 +1,200 @@
+A
+
+adduser <username> (добавляет юзера в соответствии с /etc/adduser.conf) 
+
+alias home='/home/kidel'
+
+apropos <progname> (поиск информации)
+
+arch (инфо об архитектуре)
+
+arp (инфо об IP/MAC)
+
+at (planning as: sudo echo "shutdown -h now" | at -m 23:55)
+
+
+B
+
+batch (at analog)
+
+basename
+
+bg 
+
+bzip2 -z filename #Compress
+bzip2 -d filename.bz2 #Decompress
+
+
+C
+
+cat
+chgrp
+chmod
+chown
+cmp /comm (сравнение файлов бинарных и текстовых отсортированных)
+cksum
+
+
+D
+
+date
+diff
+dir (ls analog)
+dmidecode
+du <dir> (инфо о содержимом каталога)
+
+
+E
+
+env
+
+
+F
+
+find <dirname> -name <filename>
+free
+
+
+G
+
+grep
+groups <user> (инфо о группах в которых состоит пользователь)
+gzip / gzip passwds.txt || cat file1 file2 | gzip > foo.gz
+gunzip foo.gz
+
+
+H
+
+head
+hostname
+history
+hwclock
+
+
+I
+
+id
+ifconfig (инфо о сети)
+ionice
+iostat
+ip
+iptables (настройка маршрутизации)
+iw list (wi-fi) / iwlist
+inetd - создание входящих соединений
+
+
+K
+
+kill / killall
+kmod (инфо о модулях ядра)
+
+
+L
+
+last (список последних зарег-х пользователей)
+ln
+locate 
+lscpu (отображает информацию о архитектуре ЦП)
+lshw (аппаратная конфигурация)
+lsof (отображает информацию, связанную с файлами)
+lsusb
+
+
+M
+
+more
+md5sum
+mv
+man
+
+
+N
+
+nc -zv 192.168.1.5 22 (поможет нам узнать, открыт ли порт 22)
+netstat -tulpn
+nmap -sV 192.168.56.0/24
+nice
+
+
+O
+
+openssl
+
+
+P
+
+passwd
+pidof
+ping
+ps
+pstree
+pwd
+
+
+R
+
+rename '/ / .html $ / \. Php /' * .html
+rmdir
+rm
+
+
+S
+
+scp
+sleep
+shutdown --poweroff
+sort
+split (используется для разделения файлов)
+stat (отображение состояния файловой системы)
+sum (отображение контрольной суммы)
+
+
+T
+
+tac (cat upsidedown)
+tail 
+talk
+tar -czf home.tar.gz
+time
+top
+touch
+tr
+
+
+U
+
+uname
+uniq
+uptime
+
+
+W
+
+w (время безотказной работы)
+wc
+wget -c <addr>
+whatis <progname> (man analog)
+which
+who (пользователи в системе)
+whereis (searching for files)
+
+
+X
+
+xargs
+
+
+Y
+
+yes
+youtube-dl
+
+
+Z
+zcmp || zdiff - аналоги для сжатых файлов
+zip
+
+
+
+
+
