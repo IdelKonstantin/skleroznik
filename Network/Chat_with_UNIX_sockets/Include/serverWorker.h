@@ -2,8 +2,11 @@
 #define SERVER_WORKER_H
 
 #include "commonStuff.h"
+#include "CUUIDGenerator.h"
 
 class serverWorker {
+
+    uuid::CUUIDGenerator m_uuidGen{};
 
     const char* m_host;
     const char* m_port;

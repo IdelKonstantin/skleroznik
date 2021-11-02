@@ -15,13 +15,6 @@ const std::string& uuid::CUUIDGenerator::getTemplateString() {
 std::string uuid::CUUIDGenerator::getNewUUID(uint64_t uuidType, size_t nRequiredLen) {
     
     std::string sUUID;
-    if (uuidType & generator_type::SYSTEM_GENERATOR)
-    {
-        sUUID = getRandomSystemString();
-
-        COUT << "UUID SYSTEM_GENERATOR:\t" << sUUID.c_str()  << " len = " << sUUID.length() << std::endl;
-
-    }
 
     if (uuidType & generator_type::RANDOM_GENERATOR)
     {
@@ -76,22 +69,6 @@ std::string uuid::CUUIDGenerator::getMD5(const std::string &strSource)
     }
 
     return sResult;
-}
-
-std::string uuid::CUUIDGenerator::getRandomSystemString()
-{
-    uuid_t uuidObj;
-    uuid_generate(uuidObj);
-
-    std::array<char, SIZE_OF_SYSTEM_UUID> arSystemUUID;
-    uuid_unparse(uuidObj, &arSystemUUID.front());
-
-    std::string systemUUID(std::begin(arSystemUUID), std::end(arSystemUUID));
-
-    systemUUID.erase(std::remove(systemUUID.begin(), systemUUID.end(),L'-'),
-                     systemUUID.end());
-
-    return systemUUID;
 }
 
 std::string uuid::CUUIDGenerator::getCurrentTimeString()

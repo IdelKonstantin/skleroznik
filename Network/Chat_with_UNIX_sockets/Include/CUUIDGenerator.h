@@ -30,7 +30,6 @@ namespace uuid {
         static std::string getRandomString(size_t nLen = DEFAULT_RANDOM_STRING_LEN);
         static std::string getRandomStringFast(size_t nLen = DEFAULT_RANDOM_STRING_LEN);
         static std::string getCurrentTimeString();
-        static std::string getRandomSystemString();
 
     private:
         static const std::string& getTemplateString();

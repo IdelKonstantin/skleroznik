@@ -2,8 +2,12 @@
 #define CLIENT_WORKER_H
 
 #include "commonStuff.h"
+#include "CUUIDGenerator.h"
 
 class clientWorker {
+
+    uuid::CUUIDGenerator m_uuidGen{};
+    std::string m_sessionUUID{};
 
     const char* m_host;
     const char* m_port;

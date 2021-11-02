@@ -37,10 +37,13 @@ bool clientWorker::init() {
         return false;
     }
     freeaddrinfo(m_peer_address);
+    m_sessionUUID = m_uuidGen.getNewUUID();
     return true;
 }
 
 void clientWorker::mainProcessingLoop() {
+
+    std::cout << "Client has been started with session UUID [" << m_sessionUUID << "]" << std::endl;
 
     while(true) {
 
