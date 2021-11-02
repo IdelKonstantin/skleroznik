@@ -25,9 +25,7 @@ std::string uuid::CUUIDGenerator::getNewUUID(uint64_t uuidType, size_t nRequired
     if (uuidType & generator_type::TIME_GENERATOR)
     {
         sUUID += getCurrentTimeString();
-
         COUT << "UUID TIME_GENERATOR:\t" << sUUID.c_str()  << " len = " << sUUID.length() << std::endl;
-
     }
 
 
@@ -40,6 +38,7 @@ std::string uuid::CUUIDGenerator::getNewUUID(uint64_t uuidType, size_t nRequired
                 std::string sTail = getRandomString(nRequiredLen - sUUID.length());
                 sUUID += sTail;
             } else {
+                
                 std::random_shuffle(sUUID.begin(), sUUID.end());
                 sUUID = sUUID.substr(0, nRequiredLen);
             }
@@ -49,16 +48,13 @@ std::string uuid::CUUIDGenerator::getNewUUID(uint64_t uuidType, size_t nRequired
         sUUID = getMD5(sUUID);
 
     COUT << "Final UUID:\t\t" << sUUID.c_str()  << " len = " << sUUID.length() << " nRequiredLen = " << nRequiredLen << std::endl;
-
     return sUUID;
 }
 
 std::string uuid::CUUIDGenerator::getMD5(const std::string &strSource)
 {
-
     std::array<unsigned char, MD5_DIGEST_LENGTH> sResultMD5;
     MD5(reinterpret_cast<const unsigned char *>(strSource.data()), strSource.size(), sResultMD5.data());
-
 
     std::string sResult;
     sResult.reserve(2 * MD5_DIGEST_LENGTH);
@@ -67,7 +63,6 @@ std::string uuid::CUUIDGenerator::getMD5(const std::string &strSource)
         sResult += "0123456789ABCDEF"[hashChar / 16];
         sResult += "0123456789ABCDEF"[hashChar % 16];
     }
-
     return sResult;
 }
 
@@ -75,7 +70,6 @@ std::string uuid::CUUIDGenerator::getCurrentTimeString()
 {
     time_stamp_microseconds ts = std::chrono::time_point_cast<std::chrono::microseconds>(std::chrono::system_clock::now());
     std::string sCurTime = std::to_string(ts.time_since_epoch().count());
-
     return sCurTime;
 }
 
@@ -90,21 +84,18 @@ std::string uuid::CUUIDGenerator::getRandomString(size_t nLen)
 
     while(nLen--)
         sRandom += getTemplateString()[rndIndex(rndEng)];
-
     return sRandom;
 }
 
 
 std::string uuid::CUUIDGenerator::getRandomStringFast(size_t nLen)
 {
-
     std::string sRandom;
 
     sRandom.reserve(nLen);
 
     while(nLen--)
         sRandom += getTemplateString()[uuid::CUUIDGenerator::getBoundedRandValue(getTemplateString().length() - 1)];
-
     return sRandom;
 }
 

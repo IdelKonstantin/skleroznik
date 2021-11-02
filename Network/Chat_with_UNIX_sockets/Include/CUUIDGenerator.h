@@ -12,7 +12,7 @@ const size_t DEFAULT_UUID_STRING_LEN = 2 * MD5_DIGEST_LENGTH;
 
 namespace uuid {
     
-	const int SIZE_OF_SYSTEM_UUID = 36;
+    const int SIZE_OF_SYSTEM_UUID = 36;
     namespace generator_type{
         
         const uint64_t SYSTEM_GENERATOR = 1;
@@ -24,14 +24,13 @@ namespace uuid {
     class CUUIDGenerator {
     public:
 
-        static std::string getNewUUID(uint64_t uuidType = generator_type::COMPLETE_GENERATOR, 
-            size_t nRequiredLen = DEFAULT_UUID_STRING_LEN);
-        
+        static std::string getNewUUID(uint64_t uuidType = generator_type::COMPLETE_GENERATOR, size_t nRequiredLen = DEFAULT_UUID_STRING_LEN);
         static std::string getRandomString(size_t nLen = DEFAULT_RANDOM_STRING_LEN);
         static std::string getRandomStringFast(size_t nLen = DEFAULT_RANDOM_STRING_LEN);
         static std::string getCurrentTimeString();
 
     private:
+        
         static const std::string& getTemplateString();
         static std::string getMD5(const std::string &strSource);
         static uint32_t getBoundedRandValue(uint32_t range);
