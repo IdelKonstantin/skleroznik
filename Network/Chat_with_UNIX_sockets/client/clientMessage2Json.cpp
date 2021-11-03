@@ -38,5 +38,5 @@ std::string clientMessageToJsonString::deserializeToString(std::string&& readMes
         return std::string("Error in incoming message. Reason: ") + std::string(ex.what());
     }
 
-	return std::string{"[" + senderID + "]: " + messageBody};
+    return std::string{"[" + senderID + "]: " + messageBody};
 }
