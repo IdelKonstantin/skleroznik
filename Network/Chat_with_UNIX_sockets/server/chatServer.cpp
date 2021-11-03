@@ -2,7 +2,7 @@
 
 int main() {
 
-    const char* host{"localhost"};
+    const char* host{"nevermind..."};
     const char* port{"8080"};
 
     serverWorker sw{host, port};

@@ -10,6 +10,7 @@ add_executable(${PROJECT_NAME}
 	
 	clientWorker.cpp
 	chatClient.cpp
+	clientMessage2Json.cpp
 )
 
 target_link_libraries(${PROJECT_NAME} jsoncpp)

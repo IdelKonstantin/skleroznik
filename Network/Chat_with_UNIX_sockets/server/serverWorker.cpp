@@ -31,7 +31,7 @@ bool serverWorker::init() {
         return false;
     }
 
-    std::cout << "Binding..."  << std::endl;
+    //std::cout << "Binding..."  << std::endl;
 
     if (bind(m_socket_listen, m_bind_address->ai_addr, m_bind_address->ai_addrlen)) {
 
@@ -40,7 +40,7 @@ bool serverWorker::init() {
     }
     freeaddrinfo(m_bind_address);
 
-    std::cout << "Listening..." << std::endl;
+    //std::cout << "Listening..." << std::endl;
 
     if (listen(m_socket_listen, cool_chat::MAX_CLIENTS) < 0) {
 
@@ -97,7 +97,7 @@ void serverWorker::mainProcessingLoop() {
                     char address_buffer[cool_chat::MAX_BUFF_SIZE];
                     
                     getnameinfo((struct sockaddr*)&client_address, client_len, address_buffer, sizeof(address_buffer), 0, 0, NI_NUMERICHOST);
-                    std::cerr << "New connection from: " << address_buffer << std::endl;
+                    std::cout << "New connection from: " << address_buffer << std::endl;
 
                     m_sockSessions.insert(std::make_pair(i, m_uuidGen.getNewUUID()));
 

@@ -3,11 +3,13 @@
 
 #include "commonStuff.h"
 #include "CUUIDGenerator.h"
+#include "clientMessage2Json.h"
 
 class clientWorker {
 
     uuid::CUUIDGenerator m_uuidGen{};
     std::string m_sessionUUID{};
+    clientMessageToJsonString m_messageSerializer{};
 
     const char* m_host;
     const char* m_port;

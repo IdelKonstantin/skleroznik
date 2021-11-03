@@ -19,7 +19,5 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    std::cout << "Chat-client has been connected..."  << std::endl;
-    std::cout << "Input text ended by enter..."  << std::endl;
     cw.mainProcessingLoop();
 }

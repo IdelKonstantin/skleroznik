@@ -29,7 +29,7 @@ bool clientWorker::init() {
         return false;
     }
 
-    std::cout << "Connecting..."  << std::endl;
+    //std::cout << "Connecting..."  << std::endl;
 
     if (connect(m_socket_peer, m_peer_address->ai_addr, m_peer_address->ai_addrlen)) {
 
@@ -44,6 +44,7 @@ bool clientWorker::init() {
 void clientWorker::mainProcessingLoop() {
 
     std::cout << "Client with UUID [" << m_sessionUUID << "] has been started" << std::endl;
+    std::cout << "Input text ended by enter..."  << std::endl;
 
     while(true) {
 
@@ -72,8 +73,9 @@ void clientWorker::mainProcessingLoop() {
                 std::cerr << "Connection closed by peer" << std::endl;
                 break;
             }
-            printf(">>>> %.*s", (int)bytes_received, read);
-            //std::cout << "Have got: " << read << std::endl;
+            
+            //std::cout << "Have got: " << read;
+            std::cout << m_messageSerializer.deserializeToString(std::string(read));
         }
 
         if(FD_ISSET(0, &reads)) {
@@ -85,7 +87,9 @@ void clientWorker::mainProcessingLoop() {
                 break;
             }
 
-            send(m_socket_peer, read, strlen(read), 0);
+            std::string messageEntered{read};
+            std::string jsonToSend{m_messageSerializer.serializeToJson({m_sessionUUID, messageEntered})};
+            send(m_socket_peer, jsonToSend.c_str(), strlen(jsonToSend.c_str()), 0);
         }
     }
 }
