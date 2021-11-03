@@ -99,6 +99,16 @@ void serverWorker::mainProcessingLoop() {
                     getnameinfo((struct sockaddr*)&client_address, client_len, address_buffer, sizeof(address_buffer), 0, 0, NI_NUMERICHOST);
                     std::cerr << "New connection from: " << address_buffer << std::endl;
 
+                    m_sockSessions.insert(std::make_pair(i, m_uuidGen.getNewUUID()));
+
+                    std::cout << "Total connections: " << m_sockSessions.size() << std::endl;
+                    
+                    for(const auto session : m_sockSessions) {
+
+                        std::cout << "Socket Id= " << session.first 
+                        << ", socket session UUID = " << session.second << std::endl;
+                    }
+
                 } else {
                     
                     char read[cool_chat::MAX_BUFF_SIZE];

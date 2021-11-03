@@ -43,7 +43,7 @@ bool clientWorker::init() {
 
 void clientWorker::mainProcessingLoop() {
 
-    std::cout << "Client has been started with session UUID [" << m_sessionUUID << "]" << std::endl;
+    std::cout << "Client with UUID [" << m_sessionUUID << "] has been started" << std::endl;
 
     while(true) {
 

@@ -3,10 +3,12 @@
 
 #include "commonStuff.h"
 #include "CUUIDGenerator.h"
+#include <map>
 
 class serverWorker {
 
     uuid::CUUIDGenerator m_uuidGen{};
+    std::map<cool_chat::socket_t, std::string> m_sockSessions{};
 
     const char* m_host;
     const char* m_port;
