@@ -2,19 +2,19 @@
 
 std::string clientMessageToJsonString::serializeToJson(clientMessageToJsonString::dataForSerialization&& data) {
 	
-	Json::Value root;
+    Json::Value root;
 
-	root["ID"] = data.clientID;
-	root["Message"] = data.message;
+    root["ID"] = data.clientID;
+    root["Message"] = data.message;
 
-	Json::FastWriter fastwriter;
-	return fastwriter.write(root);
+    Json::FastWriter fastwriter;
+    return fastwriter.write(root);
 }
 
 
 std::string clientMessageToJsonString::deserializeToString(std::string&& readMessage) {
 
-	Json::Value root(readMessage);
+    Json::Value root(readMessage);
     JSONCPP_STRING err;
     Json::CharReaderBuilder builder;
 
@@ -30,8 +30,8 @@ std::string clientMessageToJsonString::deserializeToString(std::string&& readMes
 
     try {
 
-    	senderID = root["ID"].asString();
-    	messageBody = root["Message"].asString();
+        senderID = root["ID"].asString();
+        messageBody = root["Message"].asString();
     }
     catch(const std::exception& ex) {
        
