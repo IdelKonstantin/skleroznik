@@ -1,0 +1,5 @@
+sudo su 
+apt install openssh-server
+systemctl status sshd
+
+Дальнейшие настройки тут: https://losst.ru/ustanovka-ssh-ubuntu-16-04
