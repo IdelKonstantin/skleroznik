@@ -17,6 +17,13 @@ int main(int argc, char* argv[])
     std::string keyDirPath{"../../client/Key"};
     auto keysFilePath{keyDirPath + std::string("/key.data")};
 
+    if (fs::exists(fs::path{keysFilePath})) {
+
+        std::cerr << "Файл с ключами уже существует по пути: [" 
+        << keysFilePath << "]" << std::endl;
+        return -1;
+    }
+
     std::cout << "Эта утилита генерирует ключи шифрования для чат-клиента по пути: [" 
     << keysFilePath << "]" << std::endl; 
 
