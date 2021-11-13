@@ -5,4 +5,5 @@ add_subdirectory(checkSocketLib)
 add_subdirectory(CUUIDGenerator)
 add_subdirectory(client)
 add_subdirectory(server)
+add_subdirectory(encryptDecrypt/Keygen)
 
