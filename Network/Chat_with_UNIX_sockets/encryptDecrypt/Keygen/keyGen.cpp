@@ -14,6 +14,12 @@ namespace fs = std::experimental::filesystem;
 
 int main(int argc, char* argv[])
 {
+    std::string keyDirPath{"../../client/Key"};
+    auto keysFilePath{keyDirPath + std::string("/key.data")};
+
+    std::cout << "Эта утилита генерирует ключи шифрования для чат-клиента по пути: [" 
+    << keysFilePath << "]" << std::endl; 
+
     using namespace CryptoPP;
 
     AutoSeededRandomPool prng;
@@ -25,23 +31,26 @@ int main(int argc, char* argv[])
     prng.GenerateBlock(key, key.size());
     prng.GenerateBlock(iv, iv.size());
 
-    std::string keyDirPath{"./Key"};
+    try {
+    
+        if (!fs::exists(keyDirPath)) {
+            fs::create_directories(keyDirPath);
+        }
+    }
+    catch (const std::exception& ex) {
 
-    if (!fs::exists(keyDirPath)) {
-        
-        fs::create_directories(keyDirPath);
+        std::cerr << "Ошибка создания папки [" << keyDirPath 
+        <<  "]. Причина: " << ex.what() << std::endl;
+        return -1;
     }
 
     std::ofstream fout;
-
-    auto iniFilePath{keyDirPath + std::string("/key.ini")};
-
-    fout.open(iniFilePath);
+    fout.open(keysFilePath);
     
     if(!fout.is_open()) {
 
         std::cerr << "Ошибка открытия файла [" 
-        << iniFilePath << "] на запись" << std::endl;
+        << keysFilePath << "] на запись" << std::endl;
         return -1;
     }
 
@@ -49,46 +58,16 @@ int main(int argc, char* argv[])
     fout.write((char*)&iv, sizeof(SecByteBlock));
     fout.close();
 
-    std::cout << "Keys generated in [" << iniFilePath <<  "]:" << std::endl;
-    std::cout << "key:\t";
+    std::cout << "Ключи сгенерированы: " << std::endl;
+    std::cout << "key -> ";
     encoder.Put(key, key.size());
     encoder.MessageEnd();
     std::cout << std::endl;
 
-    std::cout << "iv:\t";
+    std::cout << "iv  -> ";
     encoder.Put(iv, iv.size());
     encoder.MessageEnd();
     std::cout << std::endl;
-
-    // std::ifstream fin;
-    // fin.open(iniFilePath);
-
-    // if(!fin.is_open()) {
-
-    //     std::cerr << "Ошибка открытия файл [" 
-    //     << iniFilePath << "]  на чтение" << std::endl;
-    //     return -1;
-    // }
-
-    // SecByteBlock key_(AES::DEFAULT_KEYLENGTH);
-    // SecByteBlock iv_(AES::BLOCKSIZE);
-
-    // fin.read((char*)&key_, sizeof(SecByteBlock));
-    // fin.read((char*)&iv_, sizeof(SecByteBlock));
-
-    // fin.close();
-
-    // std::cout << "After: " << std::endl;
-    // std::cout << "key_: ";
-    // encoder.Put(key_, key_.size());
-    // encoder.MessageEnd();
-    // std::cout << std::endl;
-
-    // std::cout << "iv_: ";
-    // encoder.Put(iv_, iv_.size());
-    // encoder.MessageEnd();
-    // std::cout << std::endl;
-
 
     return 0;
 }

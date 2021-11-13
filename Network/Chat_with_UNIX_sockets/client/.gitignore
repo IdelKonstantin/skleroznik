@@ -4,3 +4,6 @@ CMakeCache.txt
 *.cmake
 Makefile
 client
+Key/
+*.data
+
