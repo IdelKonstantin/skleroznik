@@ -1,9 +1,9 @@
 #include <memory>
 #include <iostream>
 
-#define DEFER(func) shared_ptr<void> _(nullptr,[](...){func;})
+#define DEFER(func) std::shared_ptr<void> _(nullptr,[](...){func;})
 
-void seySomething() {
+void seySomething(int) {
     
     std::cout << " world!!!" << std::endl;
 }

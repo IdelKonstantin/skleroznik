@@ -28,7 +28,7 @@ public:
 		std::cout << "Сохраняю энергию" << std::endl;
 	}
 
-	void collTheWater() {
+	void coolTheWater() {
 
 		std::cout << "Охлаждаю воду" << std::endl;
 	}
@@ -37,30 +37,29 @@ public:
 class lightSwitch : public iCommand, public Light {
 
 public:
-
 	void execute() override {
 
 		liteOn();
 	}
 };
 
-class waterCollerManipulator : public iCommand, public WaterCooler {
+class waterCoolerManipulator : public iCommand, public WaterCooler {
 
 public:
-
 	void execute() override {
 
 		safeEnergy();
-		collTheWater();
+		coolTheWater();
 	}
 };
 
+/******************************************************************/
 
 int main() {
 
 	std::vector<std::unique_ptr<iCommand>> switches;
 
-	switches.push_back(std::make_unique<waterCollerManipulator>());
+	switches.push_back(std::make_unique<waterCoolerManipulator>());
 	switches.push_back(std::make_unique<lightSwitch>());
 
 	for(const auto& currentSwitch : switches) {
