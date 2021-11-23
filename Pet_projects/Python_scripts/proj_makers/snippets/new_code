@@ -1,0 +1,22 @@
+#!/usr/bin/env python3
+
+import argparse
+import sys
+import rutines
+
+argParser = argparse.ArgumentParser(description='Ввод имени файла и его типа')
+
+argParser.add_argument('-n', '--name', required=True, dest='fileName', action='store',
+ 	help='Имя создаваемого файла')
+
+argParser.add_argument('-t', '--type', required=True, dest='fileType', action='store', 
+ 	help='Тип файла (h - header[*.h], s - source[*.cpp])')
+
+args = argParser.parse_args()
+
+if args.fileType not in ["h", "s"]:
+	print("""Неверный тип файла. Выходим...\nДопустимые аргументы для --type:\n\th (для заголовочного файла);
+	s (для файла исходного кода""")
+	sys.exit(-1)
+
+rutines.makeRequestedFile(args.fileType, args.fileName)

@@ -1,0 +1,51 @@
+#!/usr/bin/env python3
+
+import argparse
+import sys
+from os import *
+import rutines
+
+argParser = argparse.ArgumentParser(description='Ввод имени проекта и его типа')
+
+argParser.add_argument('-n', '--name', required=True, dest='projName', action='store',
+ 	help='Имя создаваемого проекта')
+
+argParser.add_argument('-d', '--dir', required=True, dest='projDir', action='store',
+ 	help='Путь к папке в которой создается проект')
+
+argParser.add_argument('-t', '--type', dest='projType', default='e', action='store', 
+ 	help='Тип проекта (e - exec, s - static lib, d - dynamic lib)')
+
+args = argParser.parse_args()
+
+if args.projType not in ["e", "s", "d"]:
+	print("""Неверный тип проекта. Выходим...\nДопустимые аргументы для --type:\n\te (для исполняемого файла);
+	s (для статической библиотеки);\n\td (для разделяемой библиотеки)""")
+	sys.exit(-1)
+
+launchPath = args.projDir
+
+mainDirPath = launchPath + "/" + args.projName
+
+if path.exists(mainDirPath):
+	print("Проект по пути [" + mainDirPath + "]. Уже существует. Выходим...")
+	sys.exit(-1)
+
+try:
+	mkdir(mainDirPath)
+except PermissionError:
+	print("Не удается создать проект по пути [" + mainDirPath + "] - отсутствует доступ. Выходим...")
+	sys.exit(-1)
+
+requiredDirs = ["include", "src", "build"] #"systemd" 
+
+for currentDir in requiredDirs:
+	if not path.exists(path.dirname(currentDir)):
+		makedirs(mainDirPath + "/" + currentDir)
+
+chdir(mainDirPath)
+
+rutines.makeGitignore(args.projType, args.projName)
+rutines.makeCmakeListsTxt(args.projType, args.projName)
+rutines.makeMainCpp(args.projType)
+print("Проект [" + args.projName + "] успешно создан")
