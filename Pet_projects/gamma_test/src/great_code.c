@@ -123,6 +123,13 @@ char* makeNextID() {
 				while(true) {
 
 					idsHolder[i].letterCode += 1;
+
+					if(idsHolder[i].letterCode > MAX_ASCII_CHAR_NUM && i != 0) {
+
+						idsHolder[i].letterCode = MIN_ASCII_CHAR_NUM;
+						writeBuffer[currentBuffIndex - 2] += 1;
+					}
+
 					if(isForbibddenSymbol(idsHolder[i].letterCode)) {
 
 						continue;
