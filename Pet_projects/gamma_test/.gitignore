@@ -1,0 +1,7 @@
+*.a
+*.so
+CMakeFiles/
+CMakeCache.txt
+*.cmake
+Makefile
+test_util
