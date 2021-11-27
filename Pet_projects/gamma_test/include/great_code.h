@@ -36,15 +36,15 @@ size_t currentNumberIndex;
 
 /****** Kindaa "methods" *********************************************************/
 /****** "Privates, LOL" **********************************************************/
-bool isForbibddenSymbol(const char symbol);
+static bool isForbibddenSymbol(const char symbol);
 
-bool checkForForbidenSymbolsAbsence(const char* text, const size_t size);
+static bool checkForForbidenSymbolsAbsence(const char* text, const size_t size);
 
-void errorMsgPrintAndExit(const char* errorMsg);
+static void errorMsgPrintAndExit(const char* errorMsg);
 
-void printStructComponents();
+static void printStructComponents();
 
-void makeTokensAndConvert();
+static void makeTokensAndConvert();
 
 /****** AKA "Publics" **********************************************************/
 void inputRead();

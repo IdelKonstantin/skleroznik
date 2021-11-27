@@ -2,12 +2,12 @@
 
 /****** "Privates, LOL" **********************************************************/
 
-bool isForbibddenSymbol(const char symbol) {
+static bool isForbibddenSymbol(const char symbol) {
     
     return strchr("DFGJMQV0", toupper(symbol));
 }
 
-bool checkForForbidenSymbolsAbsence(const char* text, const size_t size) {
+static bool checkForForbidenSymbolsAbsence(const char* text, const size_t size) {
 
 	while(*forbiddenSymbols) {
 
@@ -22,18 +22,13 @@ bool checkForForbidenSymbolsAbsence(const char* text, const size_t size) {
 	return true;
 }
 
-bool checkIfForbiddenSymbol(const char symbol) {
-
-	return strchr(forbiddenSymbols, symbol);
-}
-
-void errorMsgPrintAndExit(const char* errorMsg) {
+static void errorMsgPrintAndExit(const char* errorMsg) {
 
 	fprintf(stderr, "%s\n", errorMsg);
 	exit(1);
 }
 
-void convertTokensToStructs() {
+static void convertTokensToStructs() {
 
 	size_t i = 0;
 
@@ -46,7 +41,7 @@ void convertTokensToStructs() {
 	}
 }
 
-void printStructComponents() {
+static void printStructComponents() {
 
 	for(size_t i = 0; i < MAX_ID_SIZE; i++) {
 
@@ -59,7 +54,7 @@ void printStructComponents() {
 	}
 }
 
-void makeTokensAndConvert() {
+static void makeTokensAndConvert() {
 
 	tokens = strtok(readBuffer, "-");
 	convertTokensToStructs();
