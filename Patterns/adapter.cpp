@@ -89,7 +89,7 @@ int main () {
 	duck usualDuck;
 	turkey wildTurkey;
 
-	turkeyAdapter fakeTurkey(wildTurkey);
+	turkeyAdapter fakeDuck(wildTurkey);
 
 	std::cout << "The Turkey says..." << std::endl;
 
@@ -100,5 +100,5 @@ int main () {
 	testDuck(usualDuck);
 
 	std::cout << "\nThe fake Duck (Turkey adapter) says..." << std::endl;
-	testDuck(fakeTurkey);
+	testDuck(fakeDuck);
 }
