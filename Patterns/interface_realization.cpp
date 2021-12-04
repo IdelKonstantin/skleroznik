@@ -27,7 +27,7 @@ public:
 
 	void doWork() const override {
 
-		std::cout << "I am making producing a lot of bugs. Sorry..." << std::endl;
+		std::cout << "I am producing a lot of bugs. Sorry..." << std::endl;
 	}
 };
 

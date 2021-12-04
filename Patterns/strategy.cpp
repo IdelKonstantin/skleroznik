@@ -147,6 +147,10 @@ int main() {
 	woodenDuck.setFlyBehavior(flyNoWay);
 	woodenDuck.setQuackBehavior(mute);
 
+	duck ironDuck;
+	ironDuck.setFlyBehavior(flyNoWay);
+	ironDuck.setQuackBehavior(mute);
+
 	/* Проверяем, что все работает */
 	std::cout << "Usual duck: " << std::endl;
 	usualDuck.fly();
@@ -159,4 +163,8 @@ int main() {
 	std::cout << "\nWooden duck: " << std::endl;
 	woodenDuck.fly();
 	woodenDuck.quack();
+
+	std::cout << "\nIron duck: " << std::endl;
+	ironDuck.fly();
+	ironDuck.quack();	
 }

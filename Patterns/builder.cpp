@@ -60,7 +60,6 @@ int main() {
 
   foo obj_1 = makeBuilder()
           .set_prop1(5)
-          .set_prop3(true)
           .set_prop4({1,2,3})
           .build();
   

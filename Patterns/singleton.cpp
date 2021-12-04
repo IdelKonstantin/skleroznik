@@ -19,6 +19,8 @@ private:
     OnlyOne(){}
     OnlyOne(const OnlyOne& root) = delete;
     OnlyOne& operator=(const OnlyOne&) = delete;
+    OnlyOne(const OnlyOne&& root) = delete;
+    OnlyOne&& operator=(const OnlyOne&&) = delete;
 };
 
 int main () {
