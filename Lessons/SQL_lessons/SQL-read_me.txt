@@ -35,6 +35,11 @@
   SELECT row1, row2, row3 FROM Table;	# выбор определенных столбцов
   SELECT DISTINCT row1 FROM Table;	/* вывести только уникальные записи для столбца */
   SELECT DISTINCT row1 FROM Table LIMIT 10 OFFSET 1;	-- вывод ограниченного числа записи со смещением (вторая строка, а не первая);
+  
+
+  Получение JSON на манер: https://www.cbr-xml-daily.ru/daily_json.js
+  SELECT to_json(r) AS RESULT FROM (SELECT * FROM public.ms_params WHERE ms_params_id = 2)r;
+  SELECT to_json(r) AS RESULT FROM (SELECT json_agg(row_to_json(t)) AS full_info FROM (SELECT * FROM public.ms_params WHERE ms_params_id = 2)t)r;
 
 2) Сортировка
 
