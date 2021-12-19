@@ -1,72 +1,84 @@
 #include <memory>
 #include <cstdint>
 #include <iostream>
+#include <map>
+#include <unordered_map>
 #include <evhttp.h>
-int main()
-{
-  if (!event_init())
-  {
-    std::cerr << "Failed to init libevent." << std::endl;
-    return -1;
-  }
-  char const SrvAddress[] = "127.0.0.1";
-  std::uint16_t SrvPort = 5555;
-  std::unique_ptr<evhttp, decltype(&evhttp_free)> Server(evhttp_start(SrvAddress, SrvPort), &evhttp_free);
-  if (!Server)
-  {
-    std::cerr << "Failed to init http server." << std::endl;
-    return -1;
-  }
-  void (*OnReq)(evhttp_request *req, void *) = [] (evhttp_request *req, void *)
-  {
-    auto *OutBuf = evhttp_request_get_output_buffer(req);
-    if (!OutBuf)
-      return;
 
-    const char *cmdtype;
+const char* getRequestType(const evhttp_request* const request) {
 
-    switch (evhttp_request_get_command(req)) {
-      case EVHTTP_REQ_GET: cmdtype = "GET"; break;
-      case EVHTTP_REQ_POST: cmdtype = "POST"; break;
-      case EVHTTP_REQ_HEAD: cmdtype = "HEAD"; break;
-      case EVHTTP_REQ_PUT: cmdtype = "PUT"; break;
-      case EVHTTP_REQ_DELETE: cmdtype = "DELETE"; break;
-      case EVHTTP_REQ_OPTIONS: cmdtype = "OPTIONS"; break;
-      case EVHTTP_REQ_TRACE: cmdtype = "TRACE"; break;
-      case EVHTTP_REQ_CONNECT: cmdtype = "CONNECT"; break;
-      case EVHTTP_REQ_PATCH: cmdtype = "PATCH"; break;
-      default: cmdtype = "unknown"; break;
-    }
+  std::unordered_map<evhttp_cmd_type, const char*> requestType {
 
-    const char* URI = evhttp_request_get_uri(req);
-
-    struct evkeyvalq* headers = evhttp_request_get_input_headers(req);
-    struct evkeyval *header;
-
-    printf("Request type: %s\n", cmdtype);
-    printf("Request URI: %s\n", URI);
-    printf("Request headers: \n");
-
-    for (header = headers->tqh_first; header; header = header->next.tqe_next) {
-      printf("\t%s: %s\n", header->key, header->value);
-    }
-
-    struct evbuffer *buf = evhttp_request_get_input_buffer(req);
-
-    char data[0xFFF];
-
-    evbuffer_copyout(buf, data, evbuffer_get_length(buf));
-
-    printf("Request body: %s\n", data);
-
-    evbuffer_add_printf(OutBuf, "<html><body><center><h1>Hello world!</h1></center></body></html>");
-    evhttp_send_reply(req, HTTP_OK, "", OutBuf);
+      {EVHTTP_REQ_GET, "GET"},
+      {EVHTTP_REQ_POST, "POST"},
+      {EVHTTP_REQ_HEAD, "HEAD"},
+      {EVHTTP_REQ_PUT, "PUT"},
+      {EVHTTP_REQ_DELETE, "DELETE"},
+      {EVHTTP_REQ_OPTIONS, "OPTIONS"},
+      {EVHTTP_REQ_TRACE, "TRACE"},
+      {EVHTTP_REQ_CONNECT, "CONNECT"},
+      {EVHTTP_REQ_PATCH, "PATCH"}
   };
-  evhttp_set_gencb(Server.get(), OnReq, nullptr);
-  if (event_dispatch() == -1)
-  {
-    std::cerr << "Failed to run message loop." << std::endl;
-    return -1;
+
+  return requestType[evhttp_request_get_command(request)];
+}
+
+std::string getURI(const evhttp_request* const request) {
+
+  return evhttp_request_get_uri(request);
+}
+
+using header_container_t = std::map<std::string, std::string>;
+
+header_container_t getHeaders(evhttp_request* const request) {
+
+  header_container_t headersData;
+
+  struct evkeyvalq* headers = evhttp_request_get_input_headers(request);
+  struct evkeyval *header;
+
+  for (header = headers->tqh_first; header; header = header->next.tqe_next) {
+    headersData.insert(std::make_pair(header->key, header->value));
   }
+
+  return headersData;
+}
+
+std::string getBody(evhttp_request* const request) {
+
+  struct evbuffer* buf = evhttp_request_get_input_buffer(request);
+  size_t len = evbuffer_get_length(buf);
+
+  std::unique_ptr<char[]> body{new char[len]};
+
+  evbuffer_copyout(buf, (char*)body.get(), len);
+  return std::string{body.get()};
+}
+
+void OnReq (evhttp_request *req, void *) {
+  
+  printf("Request method: %s\n", getRequestType(req));
+  printf("Request URI: %s\n", getURI(req).c_str());
+  printf("Request headers: \n");
+
+  for(const auto& i : getHeaders(req)) {
+
+    printf("\t%s : %s\n", i.first.c_str(), i.second.c_str());
+  }
+
+  std::cout << "Request body: " << getBody(req) << std::endl;
+
+  auto *OutBuf = evhttp_request_get_output_buffer(req);
+  evbuffer_add_printf(OutBuf, "<html><body><center><h1>Hello world!</h1></center></body></html>");
+  evhttp_send_reply(req, HTTP_OK, "", OutBuf);
+}
+
+int main() {
+
+  event_init(); //OBSOLETE?
+  std::unique_ptr<evhttp, decltype(&evhttp_free)> Server(evhttp_start("127.0.0.1", 5555), &evhttp_free);
+
+  evhttp_set_gencb(Server.get(), OnReq, nullptr);
+  event_dispatch();
   return 0;
 }
