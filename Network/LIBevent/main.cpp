@@ -83,6 +83,8 @@ void OnReq (evhttp_request *req, void *) {
   evhttp_send_reply(req, HTTP_OK, "", OutBuf);
 }
 
+//curl -XPOST http://127.0.0.1:5555/hellasdasdasdo -d 'json_takiy_json' -H 'Content-Type: json'
+
 int main() {
 
   event_init(); //OBSOLETE?
