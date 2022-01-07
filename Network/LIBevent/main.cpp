@@ -57,15 +57,28 @@ std::string getBody(evhttp_request* const request) {
   return std::string{body.get()};
 }
 
+std::pair<std::string, std::string> getClientEndPoint(evhttp_request* const request) {
+
+  char* clientIP = nullptr;
+  unsigned short clientPort = 0;
+  
+  evhttp_connection_get_peer(evhttp_request_get_connection(request), &clientIP, &clientPort);
+
+  if(clientIP && clientPort) {
+
+    return std::make_pair(clientIP, std::to_string(clientPort));
+  }
+  else
+  {
+    return std::make_pair("", "");
+  }
+} 
 void OnReq (evhttp_request *req, void *) {
 
-#if 0  
-  struct evkeyvalq params;
-  evhttp_parse_query(request->uri, &params); // Разбираем GET параметры
+  auto clientData = getClientEndPoint(req);
 
-  // Таким способом можно получить значение GET-параметра по его ключу
-  std::string value = evhttp_find_header(&params, "key");
-#endif
+  std::cout << "Client host: " << clientData.first << " client port: " 
+  << clientData.second << std::endl;
 
   printf("Request method: %s\n", getRequestType(req));
   printf("Request URI: %s\n", getURI(req).c_str());
@@ -79,7 +92,7 @@ void OnReq (evhttp_request *req, void *) {
   std::cout << "Request body: " << getBody(req) << std::endl;
 
   auto *OutBuf = evhttp_request_get_output_buffer(req);
-  evbuffer_add_printf(OutBuf, "<html><body><center><h1>Hello world!</h1></center></body></html>");
+  evbuffer_add_printf(OutBuf, "<html><body><center><h2>Hello world!</h2></center></body></html>");
   evhttp_send_reply(req, HTTP_OK, "", OutBuf);
 }
 
