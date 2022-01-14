@@ -72,13 +72,22 @@ std::pair<std::string, std::string> getClientEndPoint(evhttp_request* const requ
   {
     return std::make_pair("", "");
   }
-} 
+}
+
+std::string getPath(evhttp_request* const request) {
+
+  return{evhttp_uri_get_path(request->uri_elems)};
+}
+
+
 void OnReq (evhttp_request *req, void *) {
 
   auto clientData = getClientEndPoint(req);
 
   std::cout << "Client host: " << clientData.first << " client port: " 
   << clientData.second << std::endl;
+
+  std::cout << "Request path: " << getPath(req) << std::endl;
 
   printf("Request method: %s\n", getRequestType(req));
   printf("Request URI: %s\n", getURI(req).c_str());
@@ -92,7 +101,8 @@ void OnReq (evhttp_request *req, void *) {
   std::cout << "Request body: " << getBody(req) << std::endl;
 
   auto *OutBuf = evhttp_request_get_output_buffer(req);
-  evbuffer_add_printf(OutBuf, "<html><body><center><h2>Hello world!</h2></center></body></html>");
+  evbuffer_add_printf(OutBuf, "empty URI (may be: /get_songlist or /get_by_uid?uid=SONG_FILE_UID)");
+  //evbuffer_add_printf(OutBuf, "<html><body><center><h2>Hello world!</h2></center></body></html>");
   evhttp_send_reply(req, HTTP_OK, "", OutBuf);
 }
 
