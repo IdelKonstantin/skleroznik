@@ -1,29 +1,30 @@
 #include <iostream>
 
-class OnlyOne {
-
-public:
-
-	void vyak() {
-
-		std::cout << "Превед!!!" << std::endl;
-	}
-
-    static OnlyOne& Instance() {
-
-        static OnlyOne theSingleInstance;
-        return theSingleInstance;
-    }
-
-private:        
-    OnlyOne(){}
-    OnlyOne(const OnlyOne& root) = delete;
-    OnlyOne& operator=(const OnlyOne&) = delete;
-    OnlyOne(const OnlyOne&& root) = delete;
-    OnlyOne&& operator=(const OnlyOne&&) = delete;
+class foo {
+    
+    public:
+    
+        static foo& getInstance() {
+            
+            static foo f;
+            return f;
+        }
+        
+        void sayHello() {
+            
+            std::cout << "Hello World" << std::endl;
+        }
+        
+        ~foo() {}
+    
+    private:
+    
+        foo() {}
 };
 
-int main () {
 
-	OnlyOne::Instance().vyak();
+int main()
+{
+    foo::getInstance().sayHello();
+    return 0;
 }
