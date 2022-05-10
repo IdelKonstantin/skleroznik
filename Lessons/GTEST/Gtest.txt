@@ -1,0 +1,19 @@
+1) Установка:
+
+sudo apt install libgtest-dev
+sudo apt install -y google-mock 
+
+2) Вставка Qt-creator'ом в CMake:
+
+https://github.com/HlodricIB/Pet_project/blob/master/DB_module/Tests/CMakeLists.txt
+
+3) Примеры: 
+
+https://github.com/google/googletest/tree/main/googletest/samples
+
+4) Документация:
+
+http://google.github.io/googletest/reference/testing.html
+
+http://google.github.io/googletest/gmock_cook_book.html
+
