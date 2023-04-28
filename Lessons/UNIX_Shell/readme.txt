@@ -24,6 +24,9 @@
 	$head
 	$tail (-f)
 	$grep
+	$locate
+	$find
+	$stat
 
 3) Манипуляции с файлами и каталогами:
 
@@ -60,7 +63,18 @@
 
 	$apt install <имя пакета>
 
-7) Редакторы:
+7) Сеть: 
+
+	$ping 
+	$traceroute
+	$hostname
+	$ip a	
+	$netstat
+	$ftp
+	$wget
+	$scp/ssh
+
+8) Редакторы:
 	mc
 	nano
 	vim
