@@ -7,6 +7,9 @@
 
 int main(int argc, char** argv) {
 
-    auto fd = open(argv[1], O_CREAT | O_TRUNC | S_IRWXU | S_IRWXG | S_IRWXO);
-    close(fd);
+    auto fd = fopen("2.txt", "a");
+    char msg[256];
+    scanf("%s", msg);
+    fprintf(fd, "%s", msg);
+    fclose(fd);
 }

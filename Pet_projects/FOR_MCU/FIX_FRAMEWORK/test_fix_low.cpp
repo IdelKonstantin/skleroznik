@@ -13,7 +13,6 @@ using fx8q8_t = int16_t;
 class fix {
 
 private:
-
 	fx8q8_t m_num{0};
 
 public:
