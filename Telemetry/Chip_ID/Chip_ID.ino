@@ -1,3 +1,5 @@
+#include <WiFi.h>
+#include <WebServer.h> // include ESP32 library
 #include "SPIFFS.h"
 
 #define FIRMVARE_VERSION "1.0.0.1"
@@ -77,20 +79,104 @@ public:
 ///////////////////////////////////////////////////////////////////////
 
 fileWorker fw;
+WebServer server (80);
+
+void base() // function to load default webpage
+{ // and send HTML code to client
+
+  const String data_ = R"(<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Диагностика устройства</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            text-align: center;
+        }
+        .container {
+            width: 50%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input {
+            width: 100%;
+            padding: 5px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #ff5e62;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #e54448;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Диагностика устройства</h1>
+        <label for="deviceID">ID устройства (Номер):</label>
+        <input type="text" id="deviceID">
+        <label for="firmwareVersion">Версия прошивки:</label>
+        <input type="text" id="firmwareVersion">
+        <label for="usedMemory">Использованная память:</label>
+        <input type="text" id="usedMemory">
+        <label for="availableMemory">Доступная память:</label>
+        <input type="text" id="availableMemory">
+        <label for="fileSystemType">Тип файловой системы:</label>
+        <input type="text" id="fileSystemType">
+        <button id="formatButton">Форматировать</button>
+    </div>
+</body>
+</html>)";
+
+  
+  server.send(200, "text/html", data_);
+}
 
 void setup() {
 
   Serial.begin(115200);
   Serial.println("++=====================++");
-  fw.clearMemory();
   Serial.println(fw.averageTimeToWrite());
   Serial.println(chip::info().chipID());
   Serial.println(chip::info().firmvareVersion());
   Serial.println(chip::info().usedSpace());
   Serial.println(chip::info().freeSpace());
+
+  IPAddress local_ip(192,168,2,1);  // pre-defined IP address,
+  IPAddress gateway(192,168,2,1); // gateway
+  IPAddress subnet(255,255,255,0); 
+
+  WiFi.mode(WIFI_AP); // Wi-Fi AP mode
+  delay(1000); // setup AP mode
+  WiFi.softAP(chip::info().chipID().c_str(), chip::info().chipID().c_str());
+  WiFi.softAPConfig(local_ip, gateway , subnet);
+  // predefined IP address
+  server.begin(); // initialise server
+  server.on("/info", base);
+  
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-
+  server.handleClient();
 }
