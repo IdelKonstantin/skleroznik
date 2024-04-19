@@ -84,7 +84,7 @@ WebServer server (80);
 void base() // function to load default webpage
 { // and send HTML code to client
 
-  const String data_ = R"(<!DOCTYPE html>
+  const String data_ = "Hello world!!!"; /*R"(<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -147,7 +147,7 @@ void base() // function to load default webpage
     </div>
 </body>
 </html>)";
-
+*/
   
   server.send(200, "text/html", data_);
 }
