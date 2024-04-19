@@ -60,7 +60,7 @@ void dataUploader::handleRESAPI() {
 	processRESAPIRequests();
 }
 
-void initServer() {
+void dataUploader::initServer() {
 
 	m_server.begin();
 
@@ -87,7 +87,7 @@ void initServer() {
 	});	
 }
 
-void processRESAPIRequests() {
+void dataUploader::processRESAPIRequests() {
 
 	while(m_canWork) {
 		
