@@ -54,7 +54,7 @@ void dataUploader::finishProcessing() {
 	m_canWork = false;
 }
 
-void dataUploader::handleRESAPI() {
+void dataUploader::handleRESTAPI() {
 
 	initServer();
 	processRESAPIRequests();
@@ -66,28 +66,32 @@ void dataUploader::initServer() {
 
 	m_server.on("/bullets_get", HTTP_GET, [this]() {
 
+		//todo: прочесть конфиг с пулями из SPIFFS и выгрузить
 		m_server.send(200, "application/json", "Bullets");
 	});
 
 	m_server.on("/rifles_get", HTTP_GET, [this]() {
 
+		//todo: прочесть конфиг с винтовками из SPIFFS и выгрузить
 		m_server.send(200, "application/json", "Rifles");
 	});
 
 	m_server.on("/bullets_post", HTTP_POST, [this]() {
 
+		//todo: сохранить конфиг с пулями в SPIFFS
 		String data = m_server.arg("data");
 		m_server.send(200, "text/plain", "OK");
 	});
 
 	m_server.on("/rifles_post", HTTP_POST, [this]() {
 
+		//todo: сохранить конфиг с винтовками в SPIFFS
 		String data = m_server.arg("data");
 		m_server.send(200, "text/plain", "OK");
 	});	
 }
 
-void dataUploader::processRESAPIRequests() {
+void dataUploader::processRESTAPIRequests() {
 
 	while(m_canWork) {
 		

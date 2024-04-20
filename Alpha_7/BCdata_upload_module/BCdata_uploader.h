@@ -38,7 +38,7 @@ private:
 	WebServer m_server;
 
 	void initServer();
-	void processRESAPIRequests();
+	void processRESTAPIRequests();
 
 public:
 
@@ -46,7 +46,7 @@ public:
 	~dataUploader();
 
 	void finishProcessing();
-	void handleRESAPI();
+	void handleRESTAPI();
 };
 
 #endif /* _BC_DATA_UPLOADER_H_ */
