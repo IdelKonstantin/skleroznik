@@ -2,6 +2,7 @@
 
 void setup()
 {
+  SPIFFS.begin(false);
   dataUploader{}.handleRESAPI();
   delay(120000);
 }

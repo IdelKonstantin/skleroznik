@@ -47,6 +47,7 @@ void dataUploader::initServer() {
 		m_server.send(200, "application/json", "Rifles");
 	});
 
+	//https://github.com/espressif/arduino-esp32/blob/master/libraries/WebServer/src/WebServer.cpp
 	m_server.on("/bullets_post", HTTP_POST, [this]() {
 
 		//todo: сохранить конфиг с пулями в SPIFFS

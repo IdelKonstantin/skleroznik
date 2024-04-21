@@ -6,6 +6,9 @@
 #include <WebServer.h>
 #include "SPIFFS.h"
 
+#define BULLETS_DATAFILE "/bullets.cfg"
+#define RIFLES_DATAFILE "/rifles.cfg"
+
 class dataUploader {
 
 private:
