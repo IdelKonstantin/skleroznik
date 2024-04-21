@@ -1,34 +1,5 @@
 #include "BCdata_uploader.h"
-
-String bc_data::getChipName() {
-
-	const size_t buffLength{11};
-	char ssid[buffLength];
-	snprintf(ssid, buffLength, "S2BC-%llX", ESP.getEfuseMac());
-	return ssid;
-}
-
-//////////////////////////////////////////////////////////////
-
-chip::chip() : m_chipID(bc_data::getChipName()) {}
-
-chip& chip::info() {
-
-	static chip c;
-	return c;
-}
-
-const String& chip::chipID() const {
-
-	return m_chipID;
-}
-
-const String& chip::firmvareVersion() const {
-
-	return m_firmvareVersion;
-}
-
-//////////////////////////////////////////////////////////////
+#include "device_info.h"
 
 dataUploader::dataUploader() {
 
@@ -79,6 +50,7 @@ void dataUploader::initServer() {
 	m_server.on("/bullets_post", HTTP_POST, [this]() {
 
 		//todo: сохранить конфиг с пулями в SPIFFS
+		//и обновить поля класса-харнителя выбранной пули
 		String data = m_server.arg("data");
 		m_server.send(200, "text/plain", "OK");
 	});
@@ -86,6 +58,7 @@ void dataUploader::initServer() {
 	m_server.on("/rifles_post", HTTP_POST, [this]() {
 
 		//todo: сохранить конфиг с винтовками в SPIFFS
+		//и обновить поля класса-харнителя выбранной винтовки
 		String data = m_server.arg("data");
 		m_server.send(200, "text/plain", "OK");
 	});	
