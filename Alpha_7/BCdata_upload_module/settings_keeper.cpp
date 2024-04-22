@@ -147,15 +147,15 @@ bool configKeeper::readSelectedRifle(bc_data::selectedRifle& rifle) {
 	rifle.scopeHight = root["scope_hight"].as<float>();
 	rifle.zeroDist = root["zero_dist."].as<uint16_t>();
 	rifle.zeroVertDrift = root["zero_vert.drift"].as<float>();
-	rifle.zeroVertDriftDir = root["zero_vert.drify.dir."].as<String>() != "up"; //TODO: Проверить
+	rifle.zeroVertDriftDir = root["zero_vert.drify.dir."].as<String>() != "up";
 	rifle.zeroHorizDrift = root["zero_horiz.drift"].as<float>();
-	rifle.zeroHorizDriftDir = root["zero_horiz.drift.dir"].as<String>() != "left"; //TODO: Проверить
-	rifle.scopeUnits = root["scope_units"].as<String>() == "MOA" ? 1 : 2; //TODO: Проверить
+	rifle.zeroHorizDriftDir = root["zero_horiz.drift.dir"].as<String>() != "left";
+	rifle.scopeUnits = root["scope_units"].as<String>() == "MOA" ? 1 : 2;
 	rifle.vertClick = root["vert.click"].as<float>();
 	rifle.horizClick = root["horiz.click"].as<float>();
 	rifle.twist = root["twist"].as<uint16_t>();
-	rifle.twistDir = root["twist_dir."].as<String>() != "right"; //TODO: Проверить
-	rifle.zeroingAt = root["zeroing"].as<String>() != "here"; //TODO: Проверить
+	rifle.twistDir = root["twist_dir."].as<String>() != "right";
+	rifle.zeroingAt = root["zeroing"].as<String>() != "here";
 	rifle.zeroT = root["zero_T"].as<int16_t>();
 	rifle.zeroP = root["zero_P"].as<uint16_t>();
 
