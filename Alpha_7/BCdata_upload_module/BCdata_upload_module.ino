@@ -3,8 +3,11 @@
 void setup()
 {
   SPIFFS.begin(false);
-  dataUploader{}.handleRESAPI();
+  Serial.begin(115200);
+  Serial.println("Begin");
+  dataUploader{}.handleRESTAPI();
   delay(120000);
+  Serial.println("End");
 }
 
 void loop()

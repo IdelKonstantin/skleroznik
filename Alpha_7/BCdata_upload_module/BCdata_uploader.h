@@ -9,6 +9,8 @@
 #define BULLETS_DATAFILE "/bullets.cfg"
 #define RIFLES_DATAFILE "/rifles.cfg"
 
+//Установить ArduinoJson (by Benoit Blanchon) в менеджере библиотек IDE
+
 class dataUploader {
 
 private:

@@ -26,17 +26,17 @@ const String& chip::firmwareVersion() const {
 	return m_firmwareVersion;
 }
 
-const String& releaseDate() const {
+const String& chip::releaseDate() const {
 
 	return m_releaseDate;
 }
 
-const String& webSite() const {
+const String& chip::webSite() const {
 
 	return m_webSite;
 }
 
-const String& deviceName() const {
+const String& chip::deviceName() const {
 
 	return m_devieceName;
 }

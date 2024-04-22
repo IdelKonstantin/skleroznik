@@ -1,3 +1,4 @@
+#include <ArduinoJson.h>
 #include "BCdata_uploader.h"
 #include "device_info.h"
 
@@ -9,7 +10,7 @@ dataUploader::dataUploader() {
 
 	WiFi.disconnect(false);
 	WiFi.mode(WIFI_AP);
-	WiFi.softAP(chip::info().chipID(), chip::info().chipID());
+	WiFi.softAP(chip::info().chipID().c_str(), chip::info().chipID().c_str());
 	WiFi.softAPConfig(local_ip, gateway , subnet);
 	esp_wifi_set_ps(WIFI_PS_MAX_MODEM);
 }
@@ -28,47 +29,121 @@ void dataUploader::finishProcessing() {
 void dataUploader::handleRESTAPI() {
 
 	initServer();
-	processRESAPIRequests();
+	processRESTAPIRequests();
 }
 
 void dataUploader::initServer() {
 
 	m_server.begin();
 
+/*** GETS ***/
+
 	m_server.on("/bullets_get", HTTP_GET, [this]() {
 
-		//todo: прочесть конфиг с пулями из SPIFFS и выгрузить
-		m_server.send(200, "application/json", "Bullets");
+		if(SPIFFS.exists(BULLETS_DATAFILE)) {
+
+			auto file = SPIFFS.open(BULLETS_DATAFILE, "r");
+			
+			if(file) {
+				m_server.streamFile(file, "application/json");
+				file.close();
+			} else {
+				m_server.send(500, "text/plain", "Failed to open bullets config file");
+			}
+		} else {
+			m_server.send(404, "text/plain", "Bullets config file not found in SPIFFS");
+		}
 	});
 
 	m_server.on("/rifles_get", HTTP_GET, [this]() {
 
-		//todo: прочесть конфиг с винтовками из SPIFFS и выгрузить
-		m_server.send(200, "application/json", "Rifles");
+		if(SPIFFS.exists(RIFLES_DATAFILE)) {
+
+			auto file = SPIFFS.open(RIFLES_DATAFILE, "r");
+			
+			if(file) {
+				m_server.streamFile(file, "application/json");
+				file.close();
+			} else {
+				m_server.send(500, "text/plain", "Failed to open rifles config file");
+			}
+		} else {
+			m_server.send(404, "text/plain", "Rifles config file not found in SPIFFS");
+		}
 	});
 
-	//https://github.com/espressif/arduino-esp32/blob/master/libraries/WebServer/src/WebServer.cpp
+	m_server.on("/device_info", HTTP_GET, [this]() {
+
+		StaticJsonDocument<256> info;
+		info["DeviceName"] = chip::info().deviceName();
+		info["FirmwareVersion"] = chip::info().firmwareVersion();
+		info["ReleaseDate"] = chip::info().releaseDate();
+		info["Website"] = chip::info().webSite();
+
+		String responce;
+		serializeJsonPretty(info, responce);
+
+		m_server.send(200, "application/json", responce);
+	});
+
+/*** POSTS ***/
+
 	m_server.on("/bullets_post", HTTP_POST, [this]() {
 
-		//todo: сохранить конфиг с пулями в SPIFFS
-		//и обновить поля класса-харнителя выбранной пули
-		String data = m_server.arg("data");
-		m_server.send(200, "text/plain", "OK");
+		auto data = m_server.arg(0);
+
+		if(data.length() != 0) {
+
+			auto file = SPIFFS.open(BULLETS_DATAFILE, "w");
+
+			if(file) {
+				file.print(data);
+				file.close();
+
+				//TODO: Здесь обновить глобальную структуру с настройками выбранной пули
+
+				m_server.send(200, "text/plain", "OK");
+
+			} else {
+				m_server.send(500, "text/plain", "Failed to open bullets config file for writing");
+			}
+
+		} else {
+			m_server.send(400, "text/plain", "No bullets data received");
+		}
 	});
 
 	m_server.on("/rifles_post", HTTP_POST, [this]() {
 
-		//todo: сохранить конфиг с винтовками в SPIFFS
-		//и обновить поля класса-харнителя выбранной винтовки
-		String data = m_server.arg("data");
-		m_server.send(200, "text/plain", "OK");
-	});	
+		auto data = m_server.arg(0);
+
+		if(data.length() != 0) {
+
+			auto file = SPIFFS.open(RIFLES_DATAFILE, "w");
+
+			if(file) {
+				file.print(data);
+				file.close();
+
+				//TODO: Здесь обновить глобальную структуру с настройками выбранной винтовки
+
+				m_server.send(200, "text/plain", "OK");
+
+			} else {
+				m_server.send(500, "text/plain", "Failed to open rifles config file for writing");
+			}
+
+		} else {
+			m_server.send(400, "text/plain", "No bullets data received");
+		}
+	});
+
+
 }
 
 void dataUploader::processRESTAPIRequests() {
 
-	while(m_canWork) {
-		
+	while(m_canWork) {	
 		m_server.handleClient();
 	}
 
