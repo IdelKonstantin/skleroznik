@@ -1,13 +1,22 @@
 #include "BCdata_uploader.h"
+#include "settings_keeper.h"
 
 void setup()
 {
-  SPIFFS.begin(false);
   Serial.begin(115200);
-  Serial.println("Begin");
+  configKeeper cfgk;
+
+  if(!cfgk.init()) {
+    Serial.println("No SPIFFS mounted");
+    while(1);
+  }
+
+  if(!cfgk.readConfigsAndSetting()) {
+    Serial.println("Cant read configs");
+    while(1);
+  }
+  
   dataUploader{}.handleRESTAPI();
-  delay(120000);
-  Serial.println("End");
 }
 
 void loop()

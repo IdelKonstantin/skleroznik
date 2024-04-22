@@ -1,6 +1,6 @@
-#include <ArduinoJson.h>
 #include "BCdata_uploader.h"
 #include "device_info.h"
+#include "settings_keeper.h"
 
 dataUploader::dataUploader() {
 
@@ -36,7 +36,7 @@ void dataUploader::initServer() {
 
 	m_server.begin();
 
-/*** GETS ***/
+/****************** GETS ******************/
 
 	m_server.on("/bullets_get", HTTP_GET, [this]() {
 
@@ -86,7 +86,7 @@ void dataUploader::initServer() {
 		m_server.send(200, "application/json", responce);
 	});
 
-/*** POSTS ***/
+/****************** POSTS ******************/
 
 	m_server.on("/bullets_post", HTTP_POST, [this]() {
 
@@ -137,8 +137,6 @@ void dataUploader::initServer() {
 			m_server.send(400, "text/plain", "No bullets data received");
 		}
 	});
-
-
 }
 
 void dataUploader::processRESTAPIRequests() {
