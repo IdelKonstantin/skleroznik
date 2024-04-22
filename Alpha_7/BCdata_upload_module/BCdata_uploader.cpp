@@ -2,6 +2,8 @@
 #include "device_info.h"
 #include "settings_keeper.h"
 
+extern configKeeper cfgKeeper;
+
 dataUploader::dataUploader() {
 
 	IPAddress local_ip(192,168,2,1);
@@ -100,7 +102,12 @@ void dataUploader::initServer() {
 				file.print(data);
 				file.close();
 
-				//TODO: Здесь обновить глобальную структуру с настройками выбранной пули
+				bc_data::selectedBullet newBullet;
+				cfgKeeper.readSelectedBullet(newBullet);
+
+				if(newBullet != cfgKeeper.bullet) {
+					cfgKeeper.bullet = newBullet;
+				}
 
 				m_server.send(200, "text/plain", "OK");
 
@@ -125,7 +132,12 @@ void dataUploader::initServer() {
 				file.print(data);
 				file.close();
 
-				//TODO: Здесь обновить глобальную структуру с настройками выбранной винтовки
+				bc_data::selectedRifle newRifle;
+				cfgKeeper.readSelectedRifle(newRifle);
+
+				if(newRifle != cfgKeeper.rifle) {
+					cfgKeeper.rifle = newRifle;
+				}
 
 				m_server.send(200, "text/plain", "OK");
 

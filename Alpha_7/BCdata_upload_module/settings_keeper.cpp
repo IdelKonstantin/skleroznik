@@ -100,18 +100,18 @@ bool configKeeper::readSelectedBullet(bc_data::selectedBullet& bullet) {
 	bullet.CFM1_0 = root["CF_M1.0"].as<float>();
 	bullet.CFM1_1 = root["CF_M1.1"].as<float>();
 
-	// Serial.println(bullet.name);
-	// Serial.println(bullet.DF);
-	// Serial.println(bullet.BC, 3);
-	// Serial.println(bullet.MV);
-	// Serial.println(bullet.length, 1);
-	// Serial.println(bullet.weight);
-	// Serial.println(bullet.caliber);
-	// Serial.println(bullet.MVtemp);	
-	// Serial.println(bullet.thermSens, 1);
-	// Serial.println(bullet.CFM0_9, 3);
-	// Serial.println(bullet.CFM1_0, 3);
-	// Serial.println(bullet.CFM1_1, 3);
+	Serial.println(bullet.name);
+	Serial.println(bullet.DF);
+	Serial.println(bullet.BC, 3);
+	Serial.println(bullet.MV);
+	Serial.println(bullet.length, 1);
+	Serial.println(bullet.weight);
+	Serial.println(bullet.caliber);
+	Serial.println(bullet.MVtemp);	
+	Serial.println(bullet.thermSens, 1);
+	Serial.println(bullet.CFM0_9, 3);
+	Serial.println(bullet.CFM1_0, 3);
+	Serial.println(bullet.CFM1_1, 3);
 
 	return true;
 }
@@ -159,21 +159,21 @@ bool configKeeper::readSelectedRifle(bc_data::selectedRifle& rifle) {
 	rifle.zeroT = root["zero_T"].as<int16_t>();
 	rifle.zeroP = root["zero_P"].as<uint16_t>();
 
-	// Serial.println(rifle.name);
-	// Serial.println(rifle.scopeHight);
-	// Serial.println(rifle.zeroDist);
-	// Serial.println(rifle.zeroVertDrift , 1);
-	// Serial.println(rifle.zeroVertDriftDir);
-	// Serial.println(rifle.zeroHorizDrift, 1);
-	// Serial.println(rifle.zeroHorizDriftDir);
-	// Serial.println(rifle.scopeUnits);
-	// Serial.println(rifle.vertClick, 3);
-	// Serial.println(rifle.horizClick, 3);
-	// Serial.println(rifle.twist);
-	// Serial.println(rifle.twistDir);
-	// Serial.println(rifle.zeroingAt);
-	// Serial.println(rifle.zeroT);
-	// Serial.println(rifle.zeroP);
+	Serial.println(rifle.name);
+	Serial.println(rifle.scopeHight);
+	Serial.println(rifle.zeroDist);
+	Serial.println(rifle.zeroVertDrift , 1);
+	Serial.println(rifle.zeroVertDriftDir);
+	Serial.println(rifle.zeroHorizDrift, 1);
+	Serial.println(rifle.zeroHorizDriftDir);
+	Serial.println(rifle.scopeUnits);
+	Serial.println(rifle.vertClick, 3);
+	Serial.println(rifle.horizClick, 3);
+	Serial.println(rifle.twist);
+	Serial.println(rifle.twistDir);
+	Serial.println(rifle.zeroingAt);
+	Serial.println(rifle.zeroT);
+	Serial.println(rifle.zeroP);
 
 	return true;
 }

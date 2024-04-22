@@ -65,12 +65,12 @@ public:
 
 	void selectBulletWithIndex(size_t index) {
 
-
+		//TODO...
 	}
 
 	void selectRifleWithIndex(size_t index) {
 
-		
+		//TODO...
 	}
 };
 
