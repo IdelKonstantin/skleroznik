@@ -88,6 +88,24 @@ void dataUploader::initServer() {
 		m_server.send(200, "application/json", responce);
 	});
 
+	m_server.on("/settings_get", HTTP_GET, [this]() {
+
+		if(SPIFFS.exists(SETTINGS_DATAFILE)) {
+
+			auto file = SPIFFS.open(SETTINGS_DATAFILE, "r");
+			
+			if(file) {
+				m_server.streamFile(file, "application/json");
+				file.close();
+			} else {
+				m_server.send(500, "text/plain", "Failed to open settings config file");
+			}
+		} else {
+			m_server.send(404, "text/plain", "Settings config file not found in SPIFFS");
+		}
+	});
+
+
 /****************** POSTS ******************/
 
 	m_server.on("/bullets_post", HTTP_POST, [this]() {
@@ -149,6 +167,36 @@ void dataUploader::initServer() {
 			m_server.send(400, "text/plain", "No bullets data received");
 		}
 	});
+
+	m_server.on("/settings_post", HTTP_POST, [this]() {
+
+		auto data = m_server.arg(0);
+
+		if(data.length() != 0) {
+
+			auto file = SPIFFS.open(SETTINGS_DATAFILE, "w");
+
+			if(file) {
+				file.print(data);
+				file.close();
+
+				bc_data::deviceSettings newSettings;
+				cfgKeeper.readDeviceSettings(newSettings);
+
+				if(newSettings != cfgKeeper.settings) {
+					cfgKeeper.settings = newSettings;
+				}
+
+				m_server.send(200, "text/plain", "OK");
+
+			} else {
+				m_server.send(500, "text/plain", "Failed to open settings config file for writing");
+			}
+
+		} else {
+			m_server.send(400, "text/plain", "No settings data received");
+		}
+	});	
 }
 
 void dataUploader::processRESTAPIRequests() {

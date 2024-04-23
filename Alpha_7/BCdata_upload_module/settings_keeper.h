@@ -48,20 +48,37 @@ namespace bc_data {
 		bool operator!=(const selectedRifle& rifle);
 	};
 
+	struct deviceSettings {
+
+		uint16_t backlIntencity;
+		uint16_t backlFadeSec;
+		uint16_t autoOffMin;
+		float latitude;
+		float magneticIncl;
+		
+		bool operator!=(const deviceSettings& settings);
+	};
+
 	//TODO: Дописать для всех структур, хранящих настройки
 };
 
 class configKeeper {
 
+private:
+
+	bool readDeviceSettings();
+
 public:
 
 	bc_data::selectedBullet bullet;
 	bc_data::selectedRifle rifle;
+	bc_data::deviceSettings settings;
 
 	bool init() const;
 	bool readConfigsAndSetting();
 	bool readSelectedBullet(bc_data::selectedBullet& bullet);
 	bool readSelectedRifle(bc_data::selectedRifle& rifle);
+	bool readDeviceSettings(bc_data::deviceSettings& settings);
 
 	void selectBulletWithIndex(size_t index) {
 

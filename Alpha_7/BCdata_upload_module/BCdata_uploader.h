@@ -8,6 +8,7 @@
 
 #define BULLETS_DATAFILE "/bullets.cfg"
 #define RIFLES_DATAFILE "/rifles.cfg"
+#define SETTINGS_DATAFILE "/settings.cfg"
 
 //Установить ArduinoJson (by Benoit Blanchon) в менеджере библиотек IDE
 
