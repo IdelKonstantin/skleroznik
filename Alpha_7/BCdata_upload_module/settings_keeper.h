@@ -55,7 +55,7 @@ namespace bc_data {
 		uint16_t autoOffMin;
 		float latitude;
 		float magneticIncl;
-		
+
 		bool operator!=(const deviceSettings& settings);
 	};
 
@@ -63,10 +63,6 @@ namespace bc_data {
 };
 
 class configKeeper {
-
-private:
-
-	bool readDeviceSettings();
 
 public:
 
