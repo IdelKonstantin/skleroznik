@@ -27,8 +27,25 @@ Serial.println(bullet.CFM0_9, 3);
 Serial.println(bullet.CFM1_0, 3);
 Serial.println(bullet.CFM1_1, 3);
 
+Serial.println("Settings===");
 Serial.println(settings.backlIntencity);
 Serial.println(settings.backlFadeSec);
 Serial.println(settings.autoOffMin);
 Serial.println(settings.latitude, 4);
 Serial.println(settings.magneticIncl, 2);
+
+Serial.println("Inputs===");
+Serial.println(inputs.koriolis);
+Serial.println(inputs.termoCorr);
+Serial.println(inputs.rangeCard);
+Serial.println(inputs.aeroJump);
+
+Serial.println("Target===");
+Serial.println(target.distance);
+Serial.println(target.terrainAngle);
+Serial.println(target.speedMILs);
+Serial.println(target.azimuth);
+
+Serial.println("Mildot===");
+Serial.println(mildot.targetSizeMeters);
+Serial.println(mildot.targetSizeMils);

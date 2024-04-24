@@ -5,6 +5,10 @@
 #include <ArduinoJson.h>
 #include <cstdint>
 
+#define INPUTS_DATAFILE "/inputs.cfg"
+#define TARGET_DATAFILE "/target.cfg"
+#define MILDOT_DATAFILE "/mildot.cfg"
+
 namespace bc_data {
 
 	struct selectedBullet {
@@ -59,22 +63,55 @@ namespace bc_data {
 		bool operator!=(const deviceSettings& settings);
 	};
 
-	//TODO: Дописать для всех структур, хранящих настройки
+	struct deviceInputs {
+
+		bool koriolis{false};
+		bool termoCorr{false};
+		bool rangeCard{false};
+		bool aeroJump{false};
+
+		bool operator!=(const deviceInputs& inputs);
+	};
+
+	struct targetInfo {
+
+		uint16_t distance;
+		uint8_t terrainAngle;
+		float speedMILs;
+		uint16_t azimuth;
+
+		bool operator!=(const targetInfo& target);
+	};
+
+	struct mildotCalculator {
+
+		float targetSizeMeters;
+		float targetSizeMils;
+
+		bool operator!=(const mildotCalculator& mildot);
+	};
 };
 
-class configKeeper {
-
-public:
+struct configKeeper {
 
 	bc_data::selectedBullet bullet;
 	bc_data::selectedRifle rifle;
 	bc_data::deviceSettings settings;
+	bc_data::deviceInputs inputs;
+	bc_data::targetInfo target;
+	bc_data::mildotCalculator mildot;
 
 	bool init() const;
 	bool readConfigsAndSetting();
 	bool readSelectedBullet(bc_data::selectedBullet& bullet);
 	bool readSelectedRifle(bc_data::selectedRifle& rifle);
+
 	bool readDeviceSettings(bc_data::deviceSettings& settings);
+	bool readDeviceInputs(bc_data::deviceInputs& inputs);
+	bool readTargetInfo(bc_data::targetInfo& target);
+	bool readMildotInputs(bc_data::mildotCalculator& mildot);
+
+	//TODO: Предусмотреть сеттеры для 4хпредыдущих методов
 
 	void selectBulletWithIndex(size_t index) {
 
