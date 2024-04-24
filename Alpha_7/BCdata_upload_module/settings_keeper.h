@@ -92,7 +92,14 @@ namespace bc_data {
 	};
 };
 
-struct configKeeper {
+class configKeeper {
+
+private:
+
+	template<std::size_t N> 
+	std::pair<bool, StaticJsonDocument<N>> readAndDeserializeJSON(const char* path);
+
+public:
 
 	bc_data::selectedBullet bullet;
 	bc_data::selectedRifle rifle;

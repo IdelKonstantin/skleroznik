@@ -100,10 +100,31 @@ bool configKeeper::readConfigsAndSetting() {
 	return readMildotInputs(mildot);
 }
 
-template<std::size_t bufflen>
-bool readAndDeserialize(const char* filePath) {
+template<std::size_t N>
+std::pair<bool, StaticJsonDocument<N>> configKeeper::readAndDeserializeJSON(const char* path) {
 
+	if(!SPIFFS.exists(path)) {
+		return std::make_pair(false, StaticJsonDocument<N>{});
+	}
+
+	auto file = SPIFFS.open(path, "r");
+		
+	if(!file) {
+		return std::make_pair(false, StaticJsonDocument<N>{});
+	}
+
+	StaticJsonDocument<N> doc;
+	auto error = deserializeJson(doc, file);
 	
+	if (error) {
+
+		file.close();
+		return {false, doc};
+	}
+
+	file.close();
+
+	return {true, doc};
 }
 
 bool configKeeper::readDeviceInputs(bc_data::deviceInputs& inputs) { 
