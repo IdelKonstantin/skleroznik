@@ -129,25 +129,16 @@ std::pair<bool, StaticJsonDocument<N>> configKeeper::readAndDeserializeJSON(cons
 
 bool configKeeper::readDeviceInputs(bc_data::deviceInputs& inputs) { 
 
-	if(!SPIFFS.exists(INPUTS_DATAFILE)) {
+	const auto buffLenght{256};
+
+	bool success;
+	StaticJsonDocument<buffLenght> doc;
+
+	std::tie(success, doc) = readAndDeserializeJSON<buffLenght>(INPUTS_DATAFILE);
+
+	if(!success) {
 		return false;
 	}
-
-	auto file = SPIFFS.open(INPUTS_DATAFILE, "r");
-		
-	if(!file) {
-		return false;
-	}
-
-	StaticJsonDocument<256> doc;
-	auto error = deserializeJson(doc, file);
-	
-	if (error) {
-		file.close();
-		return false;
-	}
-
-	file.close();
 
 	inputs.koriolis = doc["koriolis"].as<bool>();
 	inputs.termoCorr = doc["termocorr."].as<bool>();
@@ -159,93 +150,56 @@ bool configKeeper::readDeviceInputs(bc_data::deviceInputs& inputs) {
 
 bool configKeeper::readTargetInfo(bc_data::targetInfo& target) {
 
-	if(!SPIFFS.exists(TARGET_DATAFILE)) {
+	const auto buffLenght{256};
+
+	bool success;
+	StaticJsonDocument<buffLenght> doc;
+
+	std::tie(success, doc) = readAndDeserializeJSON<buffLenght>(TARGET_DATAFILE);
+
+	if(!success) {
 		return false;
 	}
-
-	auto file = SPIFFS.open(TARGET_DATAFILE, "r");
-		
-	if(!file) {
-		return false;
-	}
-
-	StaticJsonDocument<256> doc;
-	auto error = deserializeJson(doc, file);
-	
-	if (error) {
-		file.close();
-		return false;
-	}
-
-	file.close();
 
 	target.distance = doc["distance"].as<uint16_t>();
 	target.terrainAngle = doc["terrain_angle"].as<uint8_t>();
 	target.speedMILs = doc["speed_mils"].as<float>();
 	target.azimuth = doc["azimuth"].as<uint16_t>();
 
-Serial.println("Target===");
-Serial.println(target.distance);
-Serial.println(target.terrainAngle);
-Serial.println(target.speedMILs);
-Serial.println(target.azimuth);
-
 	return true;
 }
 
 bool configKeeper::readMildotInputs(bc_data::mildotCalculator& mildot) {
 
-	if(!SPIFFS.exists(MILDOT_DATAFILE)) {
+	const auto buffLenght{127};
+
+	bool success;
+	StaticJsonDocument<buffLenght> doc;
+
+	std::tie(success, doc) = readAndDeserializeJSON<buffLenght>(MILDOT_DATAFILE);
+
+	if(!success) {
 		return false;
 	}
-
-	auto file = SPIFFS.open(MILDOT_DATAFILE, "r");
-		
-	if(!file) {
-		return false;
-	}
-
-	StaticJsonDocument<127> doc;
-	auto error = deserializeJson(doc, file);
-	
-	if (error) {
-		file.close();
-		return false;
-	}
-
-	file.close();
 
 	mildot.targetSizeMeters = doc["size"].as<float>();
 	mildot.targetSizeMils = doc["mils"].as<float>();
-
-Serial.println("Mildot===");
-Serial.println(mildot.targetSizeMeters);
-Serial.println(mildot.targetSizeMils);
 
 	return true;
 }
 
 bool configKeeper::readDeviceSettings(bc_data::deviceSettings& settings) {
 
-	if(!SPIFFS.exists(SETTINGS_DATAFILE)) {
+	const auto buffLenght{512};
+
+	bool success;
+	StaticJsonDocument<buffLenght> doc;
+
+	std::tie(success, doc) = readAndDeserializeJSON<buffLenght>(SETTINGS_DATAFILE);
+
+	if(!success) {
 		return false;
 	}
-
-	auto file = SPIFFS.open(SETTINGS_DATAFILE, "r");
-		
-	if(!file) {
-		return false;
-	}
-
-	StaticJsonDocument<512> doc;
-	auto error = deserializeJson(doc, file);
-	
-	if (error) {
-		file.close();
-		return false;
-	}
-
-	file.close();
 
 	settings.backlIntencity = doc["bckl.intens."].as<uint16_t>();
 	settings.backlFadeSec = doc["bckl.fade_sec"].as<uint16_t>();
@@ -258,25 +212,16 @@ bool configKeeper::readDeviceSettings(bc_data::deviceSettings& settings) {
 
 bool configKeeper::readSelectedBullet(bc_data::selectedBullet& bullet) {
 
-	if(!SPIFFS.exists(BULLETS_DATAFILE)) {
+	const auto buffLenght{4096};
+
+	bool success;
+	StaticJsonDocument<buffLenght> doc;
+
+	std::tie(success, doc) = readAndDeserializeJSON<buffLenght>(BULLETS_DATAFILE);
+
+	if(!success) {
 		return false;
 	}
-
-	auto file = SPIFFS.open(BULLETS_DATAFILE, "r");
-		
-	if(!file) {
-		return false;
-	}
-
-	StaticJsonDocument<4096> doc;
-	auto error = deserializeJson(doc, file);
-	
-	if (error) {
-		file.close();
-		return false;
-	}
-
-	file.close();
 
 	auto index = doc["current_bullet_index"].as<uint16_t>();
 	auto root = doc["bullets"][index];
@@ -300,25 +245,16 @@ bool configKeeper::readSelectedBullet(bc_data::selectedBullet& bullet) {
 
 bool configKeeper::readSelectedRifle(bc_data::selectedRifle& rifle) {
 
-	if(!SPIFFS.exists(RIFLES_DATAFILE)) {
+	const auto buffLenght{4096};
+
+	bool success;
+	StaticJsonDocument<buffLenght> doc;
+
+	std::tie(success, doc) = readAndDeserializeJSON<buffLenght>(RIFLES_DATAFILE);
+
+	if(!success) {
 		return false;
 	}
-
-	auto file = SPIFFS.open(RIFLES_DATAFILE, "r");
-		
-	if(!file) {
-		return false;
-	}
-
-	StaticJsonDocument<4096> doc;
-	auto error = deserializeJson(doc, file);
-	
-	if (error) {
-		file.close();
-		return false;
-	}
-
-	file.close();
 
 	auto index = doc["current_rifle_index"].as<uint16_t>();
 	auto root = doc["rifles"][index];

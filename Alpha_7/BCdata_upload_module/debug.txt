@@ -1,3 +1,4 @@
+Serial.println("Rifle===");
 Serial.println(rifle.name);
 Serial.println(rifle.scopeHight);
 Serial.println(rifle.zeroDist);
@@ -14,6 +15,7 @@ Serial.println(rifle.zeroingAt);
 Serial.println(rifle.zeroT);
 Serial.println(rifle.zeroP);
 
+Serial.println("Bullet===");
 Serial.println(bullet.name);
 Serial.println(bullet.DF);
 Serial.println(bullet.BC, 3);
