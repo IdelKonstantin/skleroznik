@@ -5,9 +5,7 @@
 #include <ArduinoJson.h>
 #include <cstdint>
 
-#define INPUTS_DATAFILE "/inputs.cfg"
-#define TARGET_DATAFILE "/target.cfg"
-#define MILDOT_DATAFILE "/mildot.cfg"
+#include "BCdata_restorator.h"
 
 namespace bc_data {
 

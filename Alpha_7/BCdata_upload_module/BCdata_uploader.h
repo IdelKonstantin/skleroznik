@@ -4,11 +4,9 @@
 #include <esp_wifi.h>
 #include <WiFi.h>
 #include <WebServer.h>
-#include "SPIFFS.h"
+#include <SPIFFS.h>
 
-#define BULLETS_DATAFILE "/bullets.cfg"
-#define RIFLES_DATAFILE "/rifles.cfg"
-#define SETTINGS_DATAFILE "/settings.cfg"
+#include "BCdata_restorator.h"
 
 //Установить ArduinoJson (by Benoit Blanchon) в менеджере библиотек IDE
 

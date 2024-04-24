@@ -105,6 +105,18 @@ void dataUploader::initServer() {
 		}
 	});
 
+	m_server.on("/hard_reset", HTTP_GET, [this]() {
+
+		if(!dataRestorator::formatAndRestore()) {
+			m_server.send(500, "text/plain", "Failed to reset to defaults");
+		}
+		else {
+			m_server.send(200, "text/plain", "Device has been reseted/restarted");
+			delay(1000);
+			ESP.restart();		
+		}
+	});	
+
 
 /****************** POSTS ******************/
 
