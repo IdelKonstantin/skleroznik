@@ -7,6 +7,13 @@
 
 #include "BCdata_restorator.h"
 
+#define RIFLE_BUFF_LENGTH 4096
+#define BULLET_BUFF_LENGTH 4096
+#define SETTINGS_BUFF_LENGTH 512
+#define INPUTS_BUFF_LENGTH 256
+#define TARGET_BUFF_LENGTH 256
+#define MILDOT_BUFF_LENGTH 127
+
 namespace bc_data {
 
 	struct selectedBullet {
@@ -97,6 +104,9 @@ private:
 	template<std::size_t N> 
 	std::pair<bool, StaticJsonDocument<N>> readAndDeserializeJSON(const char* path);
 
+	template<std::size_t N> 
+	void saveSerializedJSON(const StaticJsonDocument<N>& doc, const char* path);
+
 public:
 
 	bc_data::selectedBullet bullet;
@@ -116,17 +126,14 @@ public:
 	bool readTargetInfo(bc_data::targetInfo& target);
 	bool readMildotInputs(bc_data::mildotCalculator& mildot);
 
-	//TODO: Предусмотреть сеттеры для 4хпредыдущих методов
+	void compareAndSaveDeviceSettings(const bc_data::deviceSettings& settings_);
+	void compareAndSaveDeviceInputs(bc_data::deviceInputs& inputs_);
+	void compareAndSaveTargetInfo(bc_data::targetInfo& target_);
+	void compareAndSaveMildotInputs(bc_data::mildotCalculator& mildot_);
 
-	void selectBulletWithIndex(size_t index) {
-
-		//TODO...
-	}
-
-	void selectRifleWithIndex(size_t index) {
-
-		//TODO...
-	}
+	//TODO: 
+	void selectBulletWithIndex(size_t index);
+	void selectRifleWithIndex(size_t index);
 };
 
 #endif /* _SETTINGS_KEEPER_H_ */

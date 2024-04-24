@@ -129,12 +129,10 @@ std::pair<bool, StaticJsonDocument<N>> configKeeper::readAndDeserializeJSON(cons
 
 bool configKeeper::readDeviceInputs(bc_data::deviceInputs& inputs) { 
 
-	const auto buffLenght{256};
-
 	bool success;
-	StaticJsonDocument<buffLenght> doc;
+	StaticJsonDocument<INPUTS_BUFF_LENGTH> doc;
 
-	std::tie(success, doc) = readAndDeserializeJSON<buffLenght>(INPUTS_DATAFILE);
+	std::tie(success, doc) = readAndDeserializeJSON<INPUTS_BUFF_LENGTH>(INPUTS_DATAFILE);
 
 	if(!success) {
 		return false;
@@ -156,12 +154,10 @@ bool configKeeper::readDeviceInputs(bc_data::deviceInputs& inputs) {
 
 bool configKeeper::readTargetInfo(bc_data::targetInfo& target) {
 
-	const auto buffLenght{256};
-
 	bool success;
-	StaticJsonDocument<buffLenght> doc;
+	StaticJsonDocument<TARGET_BUFF_LENGTH> doc;
 
-	std::tie(success, doc) = readAndDeserializeJSON<buffLenght>(TARGET_DATAFILE);
+	std::tie(success, doc) = readAndDeserializeJSON<TARGET_BUFF_LENGTH>(TARGET_DATAFILE);
 
 	if(!success) {
 		return false;
@@ -183,12 +179,10 @@ bool configKeeper::readTargetInfo(bc_data::targetInfo& target) {
 
 bool configKeeper::readMildotInputs(bc_data::mildotCalculator& mildot) {
 
-	const auto buffLenght{127};
-
 	bool success;
-	StaticJsonDocument<buffLenght> doc;
+	StaticJsonDocument<MILDOT_BUFF_LENGTH> doc;
 
-	std::tie(success, doc) = readAndDeserializeJSON<buffLenght>(MILDOT_DATAFILE);
+	std::tie(success, doc) = readAndDeserializeJSON<MILDOT_BUFF_LENGTH>(MILDOT_DATAFILE);
 
 	if(!success) {
 		return false;
@@ -206,12 +200,10 @@ bool configKeeper::readMildotInputs(bc_data::mildotCalculator& mildot) {
 
 bool configKeeper::readDeviceSettings(bc_data::deviceSettings& settings) {
 
-	const auto buffLenght{512};
-
 	bool success;
-	StaticJsonDocument<buffLenght> doc;
+	StaticJsonDocument<SETTINGS_BUFF_LENGTH> doc;
 
-	std::tie(success, doc) = readAndDeserializeJSON<buffLenght>(SETTINGS_DATAFILE);
+	std::tie(success, doc) = readAndDeserializeJSON<SETTINGS_BUFF_LENGTH>(SETTINGS_DATAFILE);
 
 	if(!success) {
 		return false;
@@ -235,12 +227,10 @@ bool configKeeper::readDeviceSettings(bc_data::deviceSettings& settings) {
 
 bool configKeeper::readSelectedBullet(bc_data::selectedBullet& bullet) {
 
-	const auto buffLenght{4096};
-
 	bool success;
-	StaticJsonDocument<buffLenght> doc;
+	StaticJsonDocument<BULLET_BUFF_LENGTH> doc;
 
-	std::tie(success, doc) = readAndDeserializeJSON<buffLenght>(BULLETS_DATAFILE);
+	std::tie(success, doc) = readAndDeserializeJSON<BULLET_BUFF_LENGTH>(BULLETS_DATAFILE);
 
 	if(!success) {
 		return false;
@@ -282,12 +272,10 @@ bool configKeeper::readSelectedBullet(bc_data::selectedBullet& bullet) {
 
 bool configKeeper::readSelectedRifle(bc_data::selectedRifle& rifle) {
 
-	const auto buffLenght{4096};
-
 	bool success;
-	StaticJsonDocument<buffLenght> doc;
+	StaticJsonDocument<RIFLE_BUFF_LENGTH> doc;
 
-	std::tie(success, doc) = readAndDeserializeJSON<buffLenght>(RIFLES_DATAFILE);
+	std::tie(success, doc) = readAndDeserializeJSON<RIFLE_BUFF_LENGTH>(RIFLES_DATAFILE);
 
 	if(!success) {
 		return false;
@@ -332,4 +320,83 @@ bool configKeeper::readSelectedRifle(bc_data::selectedRifle& rifle) {
 // Serial.println(rifle.zeroP);
 
 	return true;
+}
+
+template<std::size_t N> 
+void configKeeper::saveSerializedJSON(const StaticJsonDocument<N>& doc, const char* path) {
+
+	auto file = SPIFFS.open(path, "w");
+
+	if(file) {
+
+		serializeJsonPretty(doc, file);
+		file.close();			
+	}
+}
+
+void configKeeper::compareAndSaveDeviceSettings(const bc_data::deviceSettings& settings_) {
+
+	if(settings != settings_) {
+		
+		settings = settings_;
+
+		StaticJsonDocument<SETTINGS_BUFF_LENGTH> doc;
+
+		doc["bckl.intens."] = settings.backlIntencity;
+		doc["bckl.fade_sec"] = settings.backlFadeSec;
+		doc["autooff_min"] = settings.autoOffMin;
+		doc["latitude"] = settings.latitude;
+		doc["magnetic.incl."] = settings.magneticIncl;
+
+		saveSerializedJSON<SETTINGS_BUFF_LENGTH>(doc, SETTINGS_DATAFILE);
+	}
+}
+
+void configKeeper::compareAndSaveDeviceInputs(bc_data::deviceInputs& inputs_) {
+
+	if(inputs != inputs_) {
+		
+		inputs = inputs_;
+
+		StaticJsonDocument<INPUTS_BUFF_LENGTH> doc;
+
+		doc["koriolis"] = inputs.koriolis;
+		doc["termocorr."] = inputs.termoCorr;
+		doc["range_card"] = inputs.rangeCard;
+		doc["aero_jump"] = inputs.aeroJump;
+
+		saveSerializedJSON<INPUTS_BUFF_LENGTH>(doc, INPUTS_DATAFILE);
+	}
+}
+
+void configKeeper::compareAndSaveTargetInfo(bc_data::targetInfo& target_) {
+
+	if(target != target_) {
+		
+		target = target_;
+
+		StaticJsonDocument<TARGET_BUFF_LENGTH> doc;
+
+		doc["distance"] = target.distance;
+		doc["terrain_angle"] = target.terrainAngle;
+		doc["speed_mils"] = target.speedMILs;
+		doc["azimuth"] = target.azimuth;
+
+		saveSerializedJSON<TARGET_BUFF_LENGTH>(doc, TARGET_DATAFILE);
+	}
+}
+
+void configKeeper::compareAndSaveMildotInputs(bc_data::mildotCalculator& mildot_) {
+
+	if(mildot != mildot_) {
+		
+		mildot = mildot_;
+
+		StaticJsonDocument<MILDOT_BUFF_LENGTH> doc;
+
+		doc["size"] = mildot.targetSizeMeters;
+		doc["mils"] = mildot.targetSizeMils;
+
+		saveSerializedJSON<MILDOT_BUFF_LENGTH>(doc, MILDOT_DATAFILE);
+	}
 }
