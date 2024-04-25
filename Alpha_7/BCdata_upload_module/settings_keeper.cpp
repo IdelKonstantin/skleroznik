@@ -1,6 +1,8 @@
 #include "settings_keeper.h"
 #include "BCdata_uploader.h"
 
+extern configKeeper cfgKeeper;
+
 bool bc_data::selectedBullet::operator!=(const selectedBullet& bullet) {
 
 	return name != bullet.name || 
@@ -123,7 +125,6 @@ std::pair<bool, StaticJsonDocument<N>> configKeeper::readAndDeserializeJSON(cons
 	}
 
 	file.close();
-
 	return {true, doc};
 }
 
@@ -142,12 +143,6 @@ bool configKeeper::readDeviceInputs(bc_data::deviceInputs& inputs) {
 	inputs.termoCorr = doc["termocorr."].as<bool>();
 	inputs.rangeCard = doc["range_card"].as<bool>();
 	inputs.aeroJump = doc["aero_jump"].as<bool>();
-
-// Serial.println("Inputs===");
-// Serial.println(inputs.koriolis);
-// Serial.println(inputs.termoCorr);
-// Serial.println(inputs.rangeCard);
-// Serial.println(inputs.aeroJump);
 	
 	return true;
 }
@@ -168,12 +163,6 @@ bool configKeeper::readTargetInfo(bc_data::targetInfo& target) {
 	target.speedMILs = doc["speed_mils"].as<float>();
 	target.azimuth = doc["azimuth"].as<uint16_t>();
 
-// Serial.println("Target===");
-// Serial.println(target.distance);
-// Serial.println(target.terrainAngle);
-// Serial.println(target.speedMILs);
-// Serial.println(target.azimuth);
-
 	return true;
 }
 
@@ -190,10 +179,6 @@ bool configKeeper::readMildotInputs(bc_data::mildotCalculator& mildot) {
 
 	mildot.targetSizeMeters = doc["size"].as<float>();
 	mildot.targetSizeMils = doc["mils"].as<float>();
-
-// Serial.println("Mildot===");
-// Serial.println(mildot.targetSizeMeters);
-// Serial.println(mildot.targetSizeMils);
 
 	return true;
 }
@@ -214,13 +199,6 @@ bool configKeeper::readDeviceSettings(bc_data::deviceSettings& settings) {
 	settings.autoOffMin = doc["autooff_min"].as<uint16_t>();
 	settings.latitude = doc["latitude"].as<float>();
 	settings.magneticIncl = doc["magnetic.incl."].as<float>();
-
-// Serial.println("Settings===");
-// Serial.println(settings.backlIntencity);
-// Serial.println(settings.backlFadeSec);
-// Serial.println(settings.autoOffMin);
-// Serial.println(settings.latitude, 4);
-// Serial.println(settings.magneticIncl, 2);
 
 	return true;
 }
@@ -252,20 +230,6 @@ bool configKeeper::readSelectedBullet(bc_data::selectedBullet& bullet) {
 	bullet.CFM0_9 = root["CF_M0.9"].as<float>();
 	bullet.CFM1_0 = root["CF_M1.0"].as<float>();
 	bullet.CFM1_1 = root["CF_M1.1"].as<float>();
-
-// Serial.println("Bullet===");
-// Serial.println(bullet.name);
-// Serial.println(bullet.DF);
-// Serial.println(bullet.BC, 3);
-// Serial.println(bullet.MV);
-// Serial.println(bullet.length, 1);
-// Serial.println(bullet.weight);
-// Serial.println(bullet.caliber);
-// Serial.println(bullet.MVtemp);	
-// Serial.println(bullet.thermSens, 1);
-// Serial.println(bullet.CFM0_9, 3);
-// Serial.println(bullet.CFM1_0, 3);
-// Serial.println(bullet.CFM1_1, 3);
 
 	return true;
 }
@@ -301,23 +265,6 @@ bool configKeeper::readSelectedRifle(bc_data::selectedRifle& rifle) {
 	rifle.zeroingAt = root["zeroing"].as<String>() != "here";
 	rifle.zeroT = root["zero_T"].as<int16_t>();
 	rifle.zeroP = root["zero_P"].as<uint16_t>();
-
-// Serial.println("Rifle===");
-// Serial.println(rifle.name);
-// Serial.println(rifle.scopeHight);
-// Serial.println(rifle.zeroDist);
-// Serial.println(rifle.zeroVertDrift , 1);
-// Serial.println(rifle.zeroVertDriftDir);
-// Serial.println(rifle.zeroHorizDrift, 1);
-// Serial.println(rifle.zeroHorizDriftDir);
-// Serial.println(rifle.scopeUnits);
-// Serial.println(rifle.vertClick, 3);
-// Serial.println(rifle.horizClick, 3);
-// Serial.println(rifle.twist);
-// Serial.println(rifle.twistDir);
-// Serial.println(rifle.zeroingAt);
-// Serial.println(rifle.zeroT);
-// Serial.println(rifle.zeroP);
 
 	return true;
 }
@@ -398,5 +345,66 @@ void configKeeper::compareAndSaveMildotInputs(bc_data::mildotCalculator& mildot_
 		doc["mils"] = mildot.targetSizeMils;
 
 		saveSerializedJSON<MILDOT_BUFF_LENGTH>(doc, MILDOT_DATAFILE);
+	}
+}
+
+bool configKeeper::processFileWithSelectedIndex(const char* path, const char* indexTag, size_t index) {
+
+	auto file = SPIFFS.open(path, "r");
+
+	if(!file) {
+		return false;
+	}
+
+	StaticJsonDocument<BULLET_BUFF_LENGTH> doc;
+
+	auto error = deserializeJson(doc, file);
+	file.close();
+	
+	if (error) {
+		return false;
+	}
+
+	doc[indexTag] = index;
+
+	file = SPIFFS.open(path, "w");
+
+	if(!file) {
+		return false;
+	}
+
+	String configData;
+
+	serializeJsonPretty(doc, configData);
+
+	file.print(configData);
+	file.close();
+
+	return true;
+}
+
+void configKeeper::selectBulletWithIndex(size_t index) {
+
+	if(processFileWithSelectedIndex(BULLETS_DATAFILE, "current_bullet_index", index)) {
+		
+		bc_data::selectedBullet newBullet;
+		cfgKeeper.readSelectedBullet(newBullet);
+
+		if(newBullet != cfgKeeper.bullet) {
+			cfgKeeper.bullet = newBullet;
+		}		
+	}
+}
+
+void configKeeper::selectRifleWithIndex(size_t index) {
+
+	if(processFileWithSelectedIndex(RIFLES_DATAFILE, "current_rifle_index", index)) {
+		
+		bc_data::selectedRifle newRifle;
+		cfgKeeper.readSelectedRifle(newRifle);
+
+		if(newRifle != cfgKeeper.rifle) {
+			cfgKeeper.rifle = newRifle;
+		}	
 	}
 }

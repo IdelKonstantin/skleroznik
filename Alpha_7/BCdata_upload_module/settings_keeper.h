@@ -7,8 +7,8 @@
 
 #include "BCdata_restorator.h"
 
-#define RIFLE_BUFF_LENGTH 4096
 #define BULLET_BUFF_LENGTH 4096
+#define RIFLE_BUFF_LENGTH 4096
 #define SETTINGS_BUFF_LENGTH 512
 #define INPUTS_BUFF_LENGTH 256
 #define TARGET_BUFF_LENGTH 256
@@ -107,6 +107,8 @@ private:
 	template<std::size_t N> 
 	void saveSerializedJSON(const StaticJsonDocument<N>& doc, const char* path);
 
+	bool processFileWithSelectedIndex(const char* path, const char* indexTag, size_t index);
+
 public:
 
 	bc_data::selectedBullet bullet;
@@ -131,7 +133,6 @@ public:
 	void compareAndSaveTargetInfo(bc_data::targetInfo& target_);
 	void compareAndSaveMildotInputs(bc_data::mildotCalculator& mildot_);
 
-	//TODO: 
 	void selectBulletWithIndex(size_t index);
 	void selectRifleWithIndex(size_t index);
 };
