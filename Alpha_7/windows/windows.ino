@@ -31,8 +31,6 @@ namespace BC {
     }
 }
 
-#define OPERATIONS_COUNT 7
-
 class UIwindow {
 
 private:
