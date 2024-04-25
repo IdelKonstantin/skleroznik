@@ -8,7 +8,7 @@ dataUploader::dataUploader() {
 
 	IPAddress local_ip(192,168,2,1);
 	IPAddress gateway(192,168,2,1);
-	IPAddress subnet(255,255,255,0); 
+	IPAddress subnet(255,255,255,0);
 
 	WiFi.disconnect(false);
 	WiFi.mode(WIFI_AP);
@@ -36,7 +36,9 @@ void dataUploader::handleRESTAPI() {
 
 void dataUploader::initServer() {
 
-	m_server.begin(); //at Port 80
+	ElegantOTA.setAuth("s2admin", "s2admin");
+	ElegantOTA.begin(&m_server);
+	m_server.begin();
 
 /****************** GETS ******************/
 
@@ -215,6 +217,7 @@ void dataUploader::processRESTAPIRequests() {
 
 	while(m_canWork) {	
 		m_server.handleClient();
+		ElegantOTA.loop();
 	}
 
 	m_server.stop();

@@ -5,10 +5,12 @@
 #include <WiFi.h>
 #include <WebServer.h>
 #include <SPIFFS.h>
+#include <ElegantOTA.h>
 
 #include "BCdata_restorator.h"
 
 //Установить ArduinoJson (by Benoit Blanchon) в менеджере библиотек IDE
+//Установить ElegantOTA в менеджере библиотек IDE (https://github.com/ayushsharma82/ElegantOTA)
 
 class dataUploader {
 

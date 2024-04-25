@@ -356,7 +356,7 @@ bool configKeeper::processFileWithSelectedIndex(const char* path, const char* in
 		return false;
 	}
 
-	StaticJsonDocument<BULLET_BUFF_LENGTH> doc;
+	StaticJsonDocument<BIG_BUFF_LENGTH> doc;
 
 	auto error = deserializeJson(doc, file);
 	file.close();
