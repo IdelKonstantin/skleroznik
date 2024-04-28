@@ -14,10 +14,10 @@ void loop()
   
   meteoInfo = meteo.getMeasurements();
 
-//  Serial.println(meteoInfo.T);
-//  Serial.println(meteoInfo.P);
-//  Serial.println(meteoInfo.H);
-  Serial.println(meteoInfo.W);
+Serial.println(meteoInfo.T);
+//Serial.println(meteoInfo.P);
+//Serial.println(meteoInfo.H);
+//Serial.println(meteoInfo.W);
   
-  delay(10);
+  delay(1000);
 }   

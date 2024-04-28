@@ -12,6 +12,9 @@ void setup()
     while(1);
   }
 
+//  Serial.println("Formating...");
+//  dataRestorator::formatAndRestore();
+
   if(!cfgKeeper.readConfigsAndSetting()) {
     Serial.println("Cant read configs");
     while(1);

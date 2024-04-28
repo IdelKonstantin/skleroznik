@@ -130,9 +130,9 @@ public:
 	bool readMildotInputs(bc_data::mildotCalculator& mildot);
 
 	void compareAndSaveDeviceSettings(const bc_data::deviceSettings& settings_);
-	void compareAndSaveDeviceInputs(bc_data::deviceInputs& inputs_);
-	void compareAndSaveTargetInfo(bc_data::targetInfo& target_);
-	void compareAndSaveMildotInputs(bc_data::mildotCalculator& mildot_);
+	void compareAndSaveDeviceInputs(const bc_data::deviceInputs& inputs_);
+	void compareAndSaveTargetInfo(const bc_data::targetInfo& target_);
+	void compareAndSaveMildotInputs(const bc_data::mildotCalculator& mildot_);
 
 	void selectBulletWithIndex(size_t index);
 	void selectRifleWithIndex(size_t index);

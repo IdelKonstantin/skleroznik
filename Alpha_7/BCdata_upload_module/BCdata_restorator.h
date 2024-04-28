@@ -7,6 +7,7 @@
 #define INPUTS_DATAFILE "/inputs.cfg"
 #define TARGET_DATAFILE "/target.cfg"
 #define MILDOT_DATAFILE "/mildot.cfg"
+#define BALLISTIC_TABLE "/rangecard.jsn"
 
 #include <SPIFFS.h>
 

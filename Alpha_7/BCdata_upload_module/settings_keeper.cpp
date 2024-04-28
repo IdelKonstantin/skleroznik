@@ -299,7 +299,7 @@ void configKeeper::compareAndSaveDeviceSettings(const bc_data::deviceSettings& s
 	}
 }
 
-void configKeeper::compareAndSaveDeviceInputs(bc_data::deviceInputs& inputs_) {
+void configKeeper::compareAndSaveDeviceInputs(const bc_data::deviceInputs& inputs_) {
 
 	if(inputs != inputs_) {
 		
@@ -316,7 +316,7 @@ void configKeeper::compareAndSaveDeviceInputs(bc_data::deviceInputs& inputs_) {
 	}
 }
 
-void configKeeper::compareAndSaveTargetInfo(bc_data::targetInfo& target_) {
+void configKeeper::compareAndSaveTargetInfo(const bc_data::targetInfo& target_) {
 
 	if(target != target_) {
 		
@@ -333,7 +333,7 @@ void configKeeper::compareAndSaveTargetInfo(bc_data::targetInfo& target_) {
 	}
 }
 
-void configKeeper::compareAndSaveMildotInputs(bc_data::mildotCalculator& mildot_) {
+void configKeeper::compareAndSaveMildotInputs(const bc_data::mildotCalculator& mildot_) {
 
 	if(mildot != mildot_) {
 		

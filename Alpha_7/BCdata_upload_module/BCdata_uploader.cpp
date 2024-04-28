@@ -119,6 +119,35 @@ void dataUploader::initServer() {
 		}
 	});	
 
+	m_server.on("/hard_reset", HTTP_GET, [this]() {
+
+		if(!dataRestorator::formatAndRestore()) {
+			m_server.send(500, "text/plain", "Failed to reset to defaults");
+		}
+		else {
+			m_server.send(200, "text/plain", "Device has been reseted/restarted");
+			delay(1000);
+			ESP.restart();		
+		}
+	});	
+
+	m_server.on("/bt_get", HTTP_GET, [this]() {
+
+		if(SPIFFS.exists(BALLISTIC_TABLE)) {
+
+			auto file = SPIFFS.open(BALLISTIC_TABLE, "r");
+			
+			if(file) {
+				m_server.streamFile(file, "application/json");
+				file.close();
+			} else {
+				m_server.send(500, "text/plain", "Failed to open range card file");
+			}
+		} else {
+			m_server.send(404, "text/plain", "No range card yet created");
+		}
+	});	
+
 
 /****************** POSTS ******************/
 
