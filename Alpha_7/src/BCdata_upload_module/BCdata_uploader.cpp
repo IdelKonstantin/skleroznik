@@ -1,8 +1,12 @@
 #include "../../inc/BCdata_uploader.h"
 #include "../../inc/device_info.h"
 #include "../../inc/settings_keeper.h"
+#include "../../inc/energy_worker.h"
+
+//TODO: Впилить FTP!!!!!
 
 extern configKeeper cfgKeeper;
+extern energyWorker energy;
 
 dataUploader::dataUploader() {
 
@@ -227,6 +231,16 @@ void dataUploader::initServer() {
 				cfgKeeper.readDeviceSettings(newSettings);
 
 				if(newSettings != cfgKeeper.settings) {
+
+					//TODO: Протестировать работу подсветки POST-запросами
+					if(newSettings.backlIntencity != cfgKeeper.settings.backlIntencity) {
+						energy.setBacklightIntencity(newSettings.backlIntencity);
+					}
+
+					if(newSettings.backlFadeSec != cfgKeeper.settings.backlFadeSec) {
+						energy.setBackliteDuration(newSettings.backlFadeSec);
+					}
+
 					cfgKeeper.settings = newSettings;
 				}
 

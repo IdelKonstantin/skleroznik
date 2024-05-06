@@ -7,7 +7,8 @@ UIwindow::UIwindow(
 	funct_t drawTail, 
 	funct_t drawCanvas, 
 	funct_t markers, 
-	funct_t worker) : 
+	funct_t worker,
+	funct_t error) : 
 
 	m_setup(setup),
 	m_drawHead(drawHead),
@@ -15,7 +16,8 @@ UIwindow::UIwindow(
 	m_drawTail(drawTail),
 	m_drawCanvas(drawCanvas),
 	m_markers(markers),
-	m_worker(worker) {}
+	m_worker(worker),
+	m_error(error) {}
 
 void UIwindow::start() const {
 
@@ -46,6 +48,13 @@ void UIwindow::start() const {
 	if(m_worker) {
 		m_worker();
 	}		
+}
+
+void UIwindow::processError() const {
+
+	if(m_error) {
+		m_error();
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -92,8 +101,14 @@ UIwindow::builder& UIwindow::builder::setWorker(funct_t value) {
 	return *this;
 };
 
+UIwindow::builder& UIwindow::builder::setError(funct_t value) {
+
+	m_error = value; 
+	return *this;
+};
+
 UIwindow UIwindow::builder::build() const {
-	return {m_setup, m_drawHead, m_drawBody, m_drawTail, m_drawCanvas, m_markers, m_worker};
+	return {m_setup, m_drawHead, m_drawBody, m_drawTail, m_drawCanvas, m_markers, m_worker, m_error};
 }
 
 UIwindow::builder UIwindow::builder::makeWindow() {

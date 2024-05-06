@@ -8,8 +8,9 @@ public:
 	using funct_t = void(*)();
 	class builder;
 
-	UIwindow(funct_t setup, funct_t drawHead, funct_t drawBody, funct_t drawTail, funct_t drawCanvas, funct_t markers, funct_t worker);
+	UIwindow(funct_t setup, funct_t drawHead, funct_t drawBody, funct_t drawTail, funct_t drawCanvas, funct_t markers, funct_t worker, funct_t error);
 	void start() const;
+	void processError() const;
 
 private:
 
@@ -20,6 +21,7 @@ private:
 	funct_t m_drawCanvas;
 	funct_t m_markers;
 	funct_t m_worker;
+	funct_t m_error;
 };
 
 class UIwindow::builder {
@@ -33,6 +35,7 @@ public:
 	builder& setDrawCanvas(funct_t value);
 	builder& setMarkers(funct_t value);
 	builder& setWorker(funct_t value);
+	builder& setError(funct_t value);
 
 	UIwindow build() const;
 	static UIwindow::builder makeWindow();
@@ -46,6 +49,7 @@ private:
 	funct_t m_drawCanvas{nullptr};
 	funct_t m_markers{nullptr};
 	funct_t m_worker{nullptr};
+	funct_t m_error{nullptr};
 };
 
 #endif /* _BC_WINDOWS_H_ */

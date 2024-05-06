@@ -4,12 +4,14 @@
 #include "./inc/main_window.h"
 #include "./inc/settings_keeper.h"
 #include "./inc/meteo_module.h"
+#include "./inc/energy_worker.h"
 
 /****************************** PERIPHERALS ******************************/
 Keypad keypad(makeKeymap(key::keys), key::rowPins, key::colPins, KEY_ROWS, KEY_COLS);
 TFT_UNIT tft{TFT_CS, TFT_RS, TFT_MOSI, TFT_SCK, TFT_RESET, TFT_MISO};
 configKeeper cfgKeeper;
 meteoModule meteo;
+energyWorker energy;
 
 /*************************************************************************/
 void setup() {
@@ -21,17 +23,19 @@ void setup() {
 		while(1);
 	}
 
-	//Зажечь подсветку, запустить экран
 	tft.begin();
-	//Подсветка тут :)))) -> написать класс, управлющий PWM
+	energy.setBacklightIntencity(cfgKeeper.settings.backlIntencity);
 
 	if(!meteo.init()) {
-
-		//Внимание метеодатчик поврежден -> на экран
+		
+		tft.setRotation(2);
+		tft.fillScreen(ILI9341_BLACK);
+		tft.setTextColor(ILI9341_WHITE, ILI9341_BLACK);
+		tft.setTextSize(2);
+		tft.setCursor(0, 0);
+		tft.println("Meteo is damaged...");
+		delay(2000);
 	}
-
-	//Впилить FTP!!!!!
-	Serial.begin(115200); //А это выпилить!
 }
 
 /*************************************************************************/
