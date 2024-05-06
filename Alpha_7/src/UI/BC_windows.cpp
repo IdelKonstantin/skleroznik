@@ -1,4 +1,4 @@
-#include "BC_windows.h"
+#include "../../inc/BC_windows.h"
 
 UIwindow::UIwindow(funct_t setup, funct_t drawHead, funct_t drawBody, funct_t drawTail, funct_t drawCanvas, funct_t markers, funct_t worker) : 
 

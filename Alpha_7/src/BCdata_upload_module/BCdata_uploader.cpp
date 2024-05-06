@@ -1,6 +1,6 @@
-#include "BCdata_uploader.h"
-#include "device_info.h"
-#include "settings_keeper.h"
+#include "../../inc/BCdata_uploader.h"
+#include "../../inc/device_info.h"
+#include "../../inc/settings_keeper.h"
 
 extern configKeeper cfgKeeper;
 

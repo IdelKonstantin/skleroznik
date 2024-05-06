@@ -1,4 +1,4 @@
-#include "device_info.h"
+#include "../../inc/device_info.h"
 
 String bc_data::getChipName() {
 

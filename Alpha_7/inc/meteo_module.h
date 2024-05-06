@@ -43,3 +43,18 @@ public:
 };
 
 #endif /* _METEO_MODULE_H_ */
+
+/*************************************************************************************
+
+#include "meteo_module.h"
+
+meteoModule meteo;
+
+meteoInfo = meteo.getMeasurements();
+
+meteoInfo.T;
+meteoInfo.P;
+meteoInfo.H;
+meteoInfo.W;
+
+*************************************************************************************/

@@ -1,5 +1,5 @@
-#include "settings_keeper.h"
-#include "BCdata_uploader.h"
+#include "../../inc/settings_keeper.h"
+#include "../../inc/BCdata_uploader.h"
 
 extern configKeeper cfgKeeper;
 

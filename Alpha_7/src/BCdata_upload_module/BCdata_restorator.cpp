@@ -1,4 +1,4 @@
-#include "BCdata_restorator.h"
+#include "../../inc/BCdata_restorator.h"
 #include <vector>
 
 const char* bulletsFile = "{"

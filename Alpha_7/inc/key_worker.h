@@ -24,3 +24,17 @@ namespace key {
 }
 
 #endif /* _BC_KEY_WORKER_H_ */
+
+/************************************************************************************ 
+
+#include "key_worker.h"
+
+Keypad keypad(makeKeymap(key::keys), key::rowPins, key::colPins, KEY_ROWS, KEY_COLS);
+
+auto key = keypad.getKey();
+
+if (key == ...) {
+	...
+}
+
+************************************************************************************/
