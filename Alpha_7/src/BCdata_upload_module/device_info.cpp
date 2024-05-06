@@ -4,7 +4,7 @@ String bc_data::getChipName() {
 
 	const size_t buffLength{11};
 	char ssid[buffLength];
-	snprintf(ssid, buffLength, "S2BC-%llX", ESP.getEfuseMac());
+	snprintf(ssid, buffLength, "S2_%llX", ESP.getEfuseMac());
 	return ssid;
 }
 
