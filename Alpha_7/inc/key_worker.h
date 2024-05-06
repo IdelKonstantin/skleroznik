@@ -6,17 +6,24 @@
 #define KEY_ROWS 5
 #define KEY_COLS 1
 
+#define LEFT_KEY	'L'
+#define RIGHT_KEY	'R'
+#define UP_KEY		'U'
+#define DOWN_KEY	'D'
+#define OK_KEY		'O'
+
 namespace key {
 	
 	const byte ROWS = 5;
 	const byte COLS = 1;
 	
 	char keys[ROWS][COLS] = {
-		{'L'},
-		{'R'},
-		{'U'},
-		{'D'},
-		{'O'}
+		
+		{LEFT_KEY},
+		{RIGHT_KEY},
+		{UP_KEY},
+		{DOWN_KEY},
+		{OK_KEY}
 	};
 
 	byte rowPins[ROWS] = {27, 16, 17, 25, 26};
@@ -25,7 +32,7 @@ namespace key {
 
 #endif /* _BC_KEY_WORKER_H_ */
 
-/************************************************************************************ 
+/************************************************************************************
 
 #include "key_worker.h"
 
