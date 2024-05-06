@@ -16,6 +16,10 @@
 
 #define TFT_UNIT Adafruit_ILI9341
 
-//TFT_UNIT tft{TFT_CS, TFT_RS, TFT_MOSI, TFT_SCK, TFT_RESET, TFT_MISO};
+/***********************************************************************
+* 
+*  TFT_UNIT tft{TFT_CS, TFT_RS, TFT_MOSI, TFT_SCK, TFT_RESET, TFT_MISO};
+* 
+***********************************************************************/
 
 #endif /* _TFT_WORKER_H_ */

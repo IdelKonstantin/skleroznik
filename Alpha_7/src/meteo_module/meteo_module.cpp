@@ -2,7 +2,7 @@
 
 meteoModule::meteoModule() {};
 
-void meteoModule::init() {
+bool meteoModule::init() {
 
 	Wire.begin();
 	
@@ -23,6 +23,8 @@ void meteoModule::init() {
 
 		m_bmeInited = m_bme.begin(0x77);
 	}
+
+	return (m_windMeterInited && m_bmeInited);
 }
 
 bc::meteoData meteoModule::getMeasurements() {

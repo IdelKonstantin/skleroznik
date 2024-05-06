@@ -10,7 +10,6 @@ namespace UI {
         void drawBody();
         void drawTail();
         void drawCanvas();
-        void markers();
         void worker();
     };
 };

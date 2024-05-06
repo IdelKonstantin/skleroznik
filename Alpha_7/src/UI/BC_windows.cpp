@@ -1,6 +1,13 @@
 #include "../../inc/BC_windows.h"
 
-UIwindow::UIwindow(funct_t setup, funct_t drawHead, funct_t drawBody, funct_t drawTail, funct_t drawCanvas, funct_t markers, funct_t worker) : 
+UIwindow::UIwindow(
+	funct_t setup, 
+	funct_t drawHead, 
+	funct_t drawBody, 
+	funct_t drawTail, 
+	funct_t drawCanvas, 
+	funct_t markers, 
+	funct_t worker) : 
 
 	m_setup(setup),
 	m_drawHead(drawHead),

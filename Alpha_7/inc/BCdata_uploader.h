@@ -36,18 +36,7 @@ public:
 /********************************************************************************************
 
 #include "BCdata_uploader.h"
-#include "settings_keeper.h"
 
-configKeeper cfgKeeper;
-
-	if(!cfgKeeper.init()) {
-
-	}
-
-	if(!cfgKeeper.readConfigsAndSetting()) {
-
-	}
-
-	dataUploader{}.handleRESTAPI();
+dataUploader{}.handleRESTAPI();
 
 ********************************************************************************************/
