@@ -5,6 +5,7 @@
 #include "../../inc/settings_keeper.h"
 #include "../../inc/input_utils.h"
 #include "../../inc/trajectory_solver_API.h"
+#include "../../inc/trajectory_solver.h"
 
 #include <Keypad.h>
 #include <Arduino.h>
@@ -93,6 +94,7 @@ void UI::main_window::setup() {
 }
 
 void UI::main_window::drawHead() {
+    
     tft.setCursor(2, 2);
     tft.println(F("T,C="));
     tft.setCursor(2, 26);
@@ -101,13 +103,16 @@ void UI::main_window::drawHead() {
     tft.println(F("H,%="));
     tft.setCursor(2, 74);
     tft.println(F("W,m/s="));
+
+    tft.drawLine(2, 96, 238, 96, ILI9341_WHITE);
+    tft.drawLine(2, 97, 238, 97, ILI9341_WHITE);
     tft.drawLine(2, 98, 238, 98, ILI9341_WHITE);
-    //tft.drawLine(2, 102, 238, 102, ILI9341_WHITE);
 
     //TODO: Wdir, BAT
 }
 
 void UI::main_window::drawBody() {
+    
     tft.setCursor(2, 104);
     tft.print(F("BUL.> "));
     tft.println(cfgKeeper.bullet.name.substring(0,12));
@@ -117,11 +122,32 @@ void UI::main_window::drawBody() {
     tft.setCursor(2, 152);
     tft.print(F("SCOPE> "));
     tft.print((cfgKeeper.rifle.scopeUnits == 1 ? "MOA" : "MRAD"));
+
+    tft.drawLine(2, 174, 238, 174, ILI9341_WHITE);
+    tft.drawLine(2, 175, 238, 175, ILI9341_WHITE);
     tft.drawLine(2, 176, 238, 176, ILI9341_WHITE);
+
+    tft.setCursor(2, 182);
+    tft.print(F("D,m= ")); 
+    tft.print(cfgKeeper.target.distance);
+    tft.print(F(" TA,dg= "));
+    tft.print(cfgKeeper.target.terrainAngle);
+
+    tft.drawLine(2, 206, 238, 206, ILI9341_WHITE);
+    tft.drawLine(2, 207, 238, 207, ILI9341_WHITE);
+    tft.drawLine(2, 208, 238, 208, ILI9341_WHITE);
 }
 
 void UI::main_window::drawTail() {
-    //DIST ANGLE STATIC
+    
+    tft.setTextSize(3);
+    tft.setCursor(49, 214);
+    tft.print(F("V="));
+    tft.setCursor(49, 238);
+    tft.print(F("H="));
+    tft.setCursor(49, 262);
+    tft.print(F("D="));
+    tft.setTextSize(2);
 }
 
 void UI::main_window::drawCanvas() {
@@ -132,11 +158,20 @@ void UI::main_window::worker() {
 
     bool updateBC{true};
 
-    Serial.begin(115200);
-
     while(1) {
         
         auto key = keypad.getKey();
+        auto meteoInfo = meteo.getMeasurements();
+
+        tft.setCursor(62, 2);
+        tft.print(meteoInfo.T, 1);
+        tft.println(" ");
+        tft.setCursor(86, 26);
+        tft.println(meteoInfo.P);
+        tft.setCursor(62, 50);
+        tft.println(meteoInfo.H);
+        tft.setCursor(86, 74);
+        tft.println(meteoInfo.W, 1);
         
         if (key == LEFT_KEY) {
             //BC
@@ -159,15 +194,9 @@ void UI::main_window::worker() {
         }
 
         if(updateBC) {
-            
-            auto meteoInfo = meteo.getMeasurements();
-
-            Serial.println(meteoInfo.W, 1);
 
             //Пересчитать поправки
             //Отрисовать на экране
         }
-
-        //Обновить метеоданные для показа
     }
 }

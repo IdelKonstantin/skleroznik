@@ -340,7 +340,7 @@ const char* inputsFile = R"({
 
 const char* targetFile = R"({
 	"distance": 600,
-	"terrain_angle": 15,
+	"terrain_angle": 0,
 	"speed_mils": 0,
 	"azimuth": 0
 })";
