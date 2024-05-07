@@ -3,8 +3,6 @@
 #include "../../inc/settings_keeper.h"
 #include "../../inc/energy_worker.h"
 
-//TODO: Впилить FTP!!!!!
-
 extern configKeeper cfgKeeper;
 extern energyWorker energy;
 
@@ -40,9 +38,11 @@ void dataUploader::handleRESTAPI() {
 
 void dataUploader::initServer() {
 
-	ElegantOTA.setAuth("s2admin", "s2admin");
+	ElegantOTA.setAuth(SERVER_CREDITS, SERVER_CREDITS);
 	ElegantOTA.begin(&m_server);
+	
 	m_server.begin();
+	m_ftp.begin(SERVER_CREDITS, SERVER_CREDITS);
 
 /****************** GETS ******************/
 
@@ -232,7 +232,6 @@ void dataUploader::initServer() {
 
 				if(newSettings != cfgKeeper.settings) {
 
-					//TODO: Протестировать работу подсветки POST-запросами
 					if(newSettings.backlIntencity != cfgKeeper.settings.backlIntencity) {
 						energy.setBacklightIntencity(newSettings.backlIntencity);
 					}
@@ -260,8 +259,10 @@ void dataUploader::processRESTAPIRequests() {
 
 	while(m_canWork) {	
 		m_server.handleClient();
+		m_ftp.handleFTP();
 		ElegantOTA.loop();
 	}
 
 	m_server.stop();
+	m_ftp.stop();
 }

@@ -4,6 +4,7 @@
 #include "./inc/main_window.h"
 #include "./inc/settings_keeper.h"
 #include "./inc/meteo_module.h"
+#include "./inc/wind_director.h"
 #include "./inc/energy_worker.h"
 
 /****************************** PERIPHERALS ******************************/
@@ -12,6 +13,7 @@ TFT_UNIT tft{TFT_CS, TFT_RS, TFT_MOSI, TFT_SCK, TFT_RESET, TFT_MISO};
 configKeeper cfgKeeper;
 meteoModule meteo;
 energyWorker energy;
+windDirector windDirection;
 
 /*************************************************************************/
 void setup() {
