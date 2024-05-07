@@ -26,6 +26,7 @@ Options g_options{};
 BallisticTable g_rangeCard{};
 Results g_results{};
 
+
 /*************************************************************************/
 void setup() {
 
@@ -40,14 +41,7 @@ void setup() {
 	energy.setBacklightIntencity(cfgKeeper.settings.backlIntencity);
 
 	if(!meteo.init()) {
-		
-		tft.setRotation(2);
-		tft.fillScreen(ILI9341_BLACK);
-		tft.setTextColor(ILI9341_WHITE, ILI9341_BLACK);
-		tft.setTextSize(2);
-		tft.setCursor(0, 0);
-		tft.println("Meteo is damaged...");
-		delay(2000);
+		meteoWarningShow();
 	}
 }
 
@@ -63,4 +57,16 @@ void loop() {
 		.setWorker(UI::main_window::worker)
 		.build()
 	.start();
+}
+
+/*************************************************************************/
+void meteoWarningShow() {
+
+	tft.setRotation(2);
+	tft.fillScreen(ILI9341_BLACK);
+	tft.setTextColor(ILI9341_WHITE, ILI9341_BLACK);
+	tft.setTextSize(2);
+	tft.setCursor(0, 0);
+	tft.println("Meteo is OFF...");
+	delay(2000);	
 }
