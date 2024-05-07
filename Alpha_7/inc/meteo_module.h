@@ -30,6 +30,7 @@ private:
 
 	bool m_bmeInited{false};
 	bool m_windMeterInited{false};
+	bool m_isInited{false};
 
 	FS3000 m_fs;
 	Adafruit_BME280 m_bme;
@@ -39,6 +40,7 @@ public:
 	
 	meteoModule();
 	bool init();
+	bool isInited();
 	bc::meteoData getMeasurements();
 };
 

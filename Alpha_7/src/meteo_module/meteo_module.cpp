@@ -24,7 +24,13 @@ bool meteoModule::init() {
 		m_bmeInited = m_bme.begin(0x77);
 	}
 
-	return (m_windMeterInited && m_bmeInited);
+	m_isInited = m_windMeterInited && m_bmeInited;
+	return m_isInited;
+}
+
+bool meteoModule::isInited() {
+
+	return m_isInited;
 }
 
 bc::meteoData meteoModule::getMeasurements() {

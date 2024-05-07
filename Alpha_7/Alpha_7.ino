@@ -6,6 +6,7 @@
 #include "./inc/meteo_module.h"
 #include "./inc/wind_director.h"
 #include "./inc/energy_worker.h"
+#include "./inc/trajectory_solver_API.h"
 
 /****************************** PERIPHERALS ******************************/
 Keypad keypad(makeKeymap(key::keys), key::rowPins, key::colPins, KEY_ROWS, KEY_COLS);
@@ -14,6 +15,15 @@ configKeeper cfgKeeper;
 meteoModule meteo;
 energyWorker energy;
 windDirector windDirection;
+
+/****************************** GLOBAL STRUCTS ***************************/
+Bullet g_bullet{};
+Rifle g_rifle{};
+Scope g_scope{};
+Inputs g_inputs{};
+Options g_options{};
+BallisticTable g_rangeCard{};
+Results g_results{};
 
 /*************************************************************************/
 void setup() {
