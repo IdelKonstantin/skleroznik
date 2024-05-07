@@ -20,6 +20,7 @@ windDirector windDirection;
 Bullet g_bullet{};
 Rifle g_rifle{};
 Scope g_scope{};
+Meteo g_meteo{};
 Inputs g_inputs{};
 Options g_options{};
 BallisticTable g_rangeCard{};
