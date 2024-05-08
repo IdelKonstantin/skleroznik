@@ -41,6 +41,7 @@ private:
 	const uint16_t m_hourLineLength{30};
 	const uint16_t m_hourCenterX{203};
 	const uint16_t m_hourCenterY{57};
+	const size_t m_windIndexMax;
 
 	void updateWindDirection() {
 
@@ -49,19 +50,27 @@ private:
 		m_windAngle = windDirInfo.second;
 	}
 
+	void drawClockLine(uint16_t color) {
+		tft.drawLine(m_hourCenterX, m_hourCenterY, m_hourX, m_hourY, color);
+		tft.fillCircle(203, 57, 4, ILI9341_WHITE);
+	}
+
 public:
-	windDirector() : m_windHour(m_hoursToDegs[0].first), m_windAngle(m_hoursToDegs[0].second) {}
+	windDirector() : m_windHour(m_hoursToDegs[0].first), 
+	m_windAngle(m_hoursToDegs[0].second), 
+	m_windIndexMax(m_hoursToDegs.size() - 1) {}
 
 	void drawClock() {
 
-		tft.drawRoundRect(167, 21, 73, 73, 3, ILI9341_WHITE);
-		tft.fillCircle(203, 57, 4, ILI9341_WHITE);    
+		tft.drawRoundRect(167, 21, 73, 73, 3, ILI9341_WHITE);    
 		tft.setTextSize(3);
 		tft.setCursor(147, 31);
 		tft.println(F("W"));
 		tft.setCursor(147, 59);
 		tft.println(F("D"));
 		tft.setTextSize(2);
+
+		//Дорисовать часы, рефактор
 	}
 
 	void drawHourLine() {
@@ -69,39 +78,43 @@ public:
 		m_hourX = m_hourCenterX + m_hourLineLength * sin(m_windAngle * DEGS_TO_RADS);
 		m_hourY = m_hourCenterY - m_hourLineLength * cos(m_windAngle * DEGS_TO_RADS);
 
-		tft.drawLine(hourCenterX, hourCenterY, hourX, hourY, ILI9341_WHITE);
+		drawClockLine(ILI9341_WHITE);
 	}
 
 	void increaseHour() {
 
 		m_windDirIndex += 1;
-		m_windDirIndex = m_windDirIndex > m_hoursToDegs.size() ? 0 : m_windDirIndex;		
-
+		m_windDirIndex = m_windDirIndex > m_windIndexMax ? 0 : m_windDirIndex;		
 		updateWindDirection();		
 	}
 
 	void decreaseHour() {
 
 		m_windDirIndex -= 1;
-		m_windDirIndex = m_windDirIndex < 0 ? m_hoursToDegs.size() : m_windDirIndex;
-
+		m_windDirIndex = m_windDirIndex < 0 ? m_windIndexMax : m_windDirIndex;
 		updateWindDirection();
 	}
 
 	void increaseHourAndDrawLine() {
 
-		tft.drawLine(hourCenterX, hourCenterY, hourX, hourY, ILI9341_BLACK);
-		tft.fillCircle(203, 57, 4, ILI9341_WHITE);
-
+		drawClockLine(ILI9341_BLACK);
 		increaseHour();
 	}
 
 	void decreaseHourAndDrawLine() {
 		
-		tft.drawLine(hourCenterX, hourCenterY, hourX, hourY, ILI9341_BLACK); 
-		tft.fillCircle(203, 57, 4, ILI9341_WHITE);
-
+		drawClockLine(ILI9341_BLACK);
 		decreaseHour();
+	}
+
+	float getWindHour() const {
+
+		return m_windHour;
+	}
+
+	uint16_t getWindAngle() const {
+
+		return m_windAngle;
 	}
 };
 

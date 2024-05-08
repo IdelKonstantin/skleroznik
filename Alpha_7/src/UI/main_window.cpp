@@ -170,21 +170,48 @@ void UI::main_window::drawCanvas() {
     tft.setTextColor(ILI9341_WHITE, ILI9341_BLACK);
 }
 
-static mainWindowShowResults(const Results& g_results) {
+//////////////////////////////////////////////////////////////////////////////////
 
-    tft.setTextSize(3);
-    tft.setCursor(96, 214);
-    tft.print(g_results.vertAngleUnits, 2);
-    tft.println(" ");
+namespace UI {
+    namespace main_window {
 
-    tft.setCursor(96, 238);
-    tft.print(g_results.horizAngleUnits + g_results.derivAngleUnits, 2);
-    tft.println(" ");
+        inline void mainWindowShowResults(const Results& g_results) {
 
-    tft.setCursor(96, 262);
-    tft.print(g_results.flightTime, 2);
-    tft.println(" ");
-};
+            tft.setTextSize(3);
+            tft.setCursor(96, 214);
+            tft.print(g_results.vertAngleUnits, 2);
+            tft.println(" ");
+
+            tft.setCursor(96, 238);
+            tft.print(g_results.horizAngleUnits + g_results.derivAngleUnits, 2);
+            tft.println(" ");
+
+            tft.setCursor(96, 262);
+            tft.print(g_results.flightTime, 2);
+            tft.println(" ");
+        };
+
+        inline void mainWindowShowMeteo(const bc::meteoData& meteoInfo) {
+
+            tft.setTextSize(2);
+            tft.setCursor(62, 2);
+            tft.print(meteoInfo.T, 1);
+            tft.println(" ");
+            tft.setCursor(86, 26);
+            tft.println(meteoInfo.P);
+            tft.setCursor(62, 50);
+            tft.println(meteoInfo.H);
+            tft.setCursor(86, 74);
+            tft.println(meteoInfo.W, 1);        
+        }
+
+        inline void mainWindowShowVoltage() {
+
+            tft.setCursor(202, 2);
+            tft.println(3.12, 1);//TODO analogRead bla-bla        
+        }
+    }    
+}
 
 void UI::main_window::worker() {
 
@@ -192,44 +219,30 @@ void UI::main_window::worker() {
 
     while(1) {
         
-        auto key = keypad.getKey();
         auto meteoInfo = meteo.getMeasurements();
-
-        tft.setTextSize(2);
-        tft.setCursor(62, 2);
-        tft.print(meteoInfo.T, 1);
-        tft.println(" ");
-        tft.setCursor(86, 26);
-        tft.println(meteoInfo.P);
-        tft.setCursor(62, 50);
-        tft.println(meteoInfo.H);
-        tft.setCursor(86, 74);
-        tft.println(meteoInfo.W, 1);
-
-        tft.setCursor(202, 2);
-        tft.println(3.12, 1);//TODO analogRead bla-bla
-
+        UI::main_window::mainWindowShowMeteo(meteoInfo);
+        UI::main_window::mainWindowShowVoltage();
         windDirection.drawHourLine();
 
+        auto key = keypad.getKey();
+
         if (key == LEFT_KEY) {
+            
             //BC
             break;
-        }
 
-        if (key == RIGHT_KEY) {
+        } else if (key == RIGHT_KEY) {
+            
             //Data
             break;
-        }
 
-        if (key == UP_KEY) {
+        } else if (key == UP_KEY) {
             windDirection.increaseHourAndDrawLine();
-        }    
 
-        if (key == DOWN_KEY) {
+        } else if (key == DOWN_KEY) {
             windDirection.decreaseHourAndDrawLine();
-        }
 
-        if (key == OK_KEY) {
+        } else if (key == OK_KEY) {
             updateBC = !updateBC;
         }
 
@@ -241,14 +254,14 @@ void UI::main_window::worker() {
                 meteoInfo.P,
                 meteoInfo.H,
                 meteoInfo.W,
-                windDirAngle,
+                windDirection.getWindAngle(),
                 DUMMY_DATA,
                 SIMPLE_CASE,
                 DUMMY_PTR
             };
 
             trajectorySolver (&g_meteo, &g_bullet, &g_rifle, &g_scope, &g_inputs, &g_options, &g_results);
-            mainWindowShowResults(g_results);
+            UI::main_window::mainWindowShowResults(g_results);
         }
     }
 }
