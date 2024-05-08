@@ -12,8 +12,6 @@
 #include <Keypad.h>
 #include <Arduino.h>
 
-#include <vector>
-
 extern Keypad keypad;
 extern meteoModule meteo;
 extern TFT_UNIT tft;
@@ -110,24 +108,15 @@ void UI::main_window::drawHead() {
     tft.setCursor(2, 74);
     tft.println(F("W,m/s="));
 
-    //Vcc symbol
+    //VCC
     tft.setCursor(184, 2);
     tft.println(F("V"));
     tft.drawRoundRect(198, 0, 41, 19, 2, ILI9341_WHITE);
 
+    windDirection.drawClock();
+
     tft.drawLine(2, 96, 238, 96, ILI9341_WHITE);
-    //tft.drawLine(2, 97, 238, 97, ILI9341_WHITE);
     tft.drawLine(2, 98, 238, 98, ILI9341_WHITE);
-
-    tft.drawRoundRect(167, 21, 73, 73, 3, ILI9341_WHITE);
-    tft.fillCircle(203, 57, 4, ILI9341_WHITE);
-
-    tft.setTextSize(3);
-    tft.setCursor(147, 31);
-    tft.println(F("W"));
-    tft.setCursor(147, 59);
-    tft.println(F("D"));
-    tft.setTextSize(2);
 }
 
 void UI::main_window::drawBody() {
@@ -143,7 +132,6 @@ void UI::main_window::drawBody() {
     tft.print((cfgKeeper.rifle.scopeUnits == 1 ? "MOA" : "MRAD"));
 
     tft.drawLine(2, 174, 238, 174, ILI9341_WHITE);
-    //tft.drawLine(2, 175, 238, 175, ILI9341_WHITE);
     tft.drawLine(2, 176, 238, 176, ILI9341_WHITE);
 
     tft.setCursor(2, 182);
@@ -153,7 +141,6 @@ void UI::main_window::drawBody() {
     tft.print(cfgKeeper.target.terrainAngle);
 
     tft.drawLine(2, 206, 238, 206, ILI9341_WHITE);
-    //tft.drawLine(2, 207, 238, 207, ILI9341_WHITE);
     tft.drawLine(2, 208, 238, 208, ILI9341_WHITE);
 }
 
@@ -183,41 +170,30 @@ void UI::main_window::drawCanvas() {
     tft.setTextColor(ILI9341_WHITE, ILI9341_BLACK);
 }
 
+static mainWindowShowResults(const Results& g_results) {
+
+    tft.setTextSize(3);
+    tft.setCursor(96, 214);
+    tft.print(g_results.vertAngleUnits, 2);
+    tft.println(" ");
+
+    tft.setCursor(96, 238);
+    tft.print(g_results.horizAngleUnits + g_results.derivAngleUnits, 2);
+    tft.println(" ");
+
+    tft.setCursor(96, 262);
+    tft.print(g_results.flightTime, 2);
+    tft.println(" ");
+};
+
 void UI::main_window::worker() {
 
     bool updateBC{true};
-    int16_t windDirIndex{0};
-
-    const std::vector<std::pair<float, uint16_t>> windDirData { //TODO: Refactor it to class!!!
-        {12, 0},
-        {1, 30},
-        {1.5, 45},
-        {2, 60},
-        {3, 90},
-        {4, 120},
-        {4.5, 135},
-        {5, 150},
-        {6, 180},
-        {7, 210},
-        {7.5, 225},
-        {8, 240},
-        {9, 270},
-        {10, 300},
-        {10.5, 315},
-        {11, 330}
-    };
-
-    const uint16_t hourHandLength{30};
-
-    Serial.begin(115200);
 
     while(1) {
         
         auto key = keypad.getKey();
         auto meteoInfo = meteo.getMeasurements();
-        auto windDirInfo = windDirData.at(windDirIndex);
-        auto windFromHour = windDirInfo.first;
-        auto windDirAngle = windDirInfo.second;
 
         tft.setTextSize(2);
         tft.setCursor(62, 2);
@@ -233,13 +209,7 @@ void UI::main_window::worker() {
         tft.setCursor(202, 2);
         tft.println(3.12, 1);//TODO analogRead bla-bla
 
-        const auto hourCenterX{203};
-        const auto hourCenterY{57};
-
-        auto hourX = hourCenterX + hourHandLength * sin(windDirAngle * 0.017453);
-        auto hourY = hourCenterY - hourHandLength * cos(windDirAngle * 0.017453);
-
-        tft.drawLine(hourCenterX, hourCenterY, hourX, hourY, ILI9341_WHITE);
+        windDirection.drawHourLine();
 
         if (key == LEFT_KEY) {
             //BC
@@ -252,21 +222,11 @@ void UI::main_window::worker() {
         }
 
         if (key == UP_KEY) {
-
-            tft.drawLine(hourCenterX, hourCenterY, hourX, hourY, ILI9341_BLACK);           
-            tft.fillCircle(203, 57, 4, ILI9341_WHITE);
-
-            windDirIndex += 1;
-            windDirIndex = windDirIndex > 15 ? 0 : windDirIndex;
+            windDirection.increaseHourAndDrawLine();
         }    
 
         if (key == DOWN_KEY) {
-
-            tft.drawLine(hourCenterX, hourCenterY, hourX, hourY, ILI9341_BLACK); 
-            tft.fillCircle(203, 57, 4, ILI9341_WHITE);
-
-            windDirIndex -= 1;
-            windDirIndex = windDirIndex < 0 ? 15 : windDirIndex;
+            windDirection.decreaseHourAndDrawLine();
         }
 
         if (key == OK_KEY) {
@@ -288,19 +248,7 @@ void UI::main_window::worker() {
             };
 
             trajectorySolver (&g_meteo, &g_bullet, &g_rifle, &g_scope, &g_inputs, &g_options, &g_results);
-            
-            tft.setTextSize(3);
-            tft.setCursor(96, 214);
-            tft.print(g_results.vertAngleUnits, 2);
-            tft.println(" ");
-
-            tft.setCursor(96, 238);
-            tft.print(g_results.horizAngleUnits + g_results.derivAngleUnits, 2);
-            tft.println(" ");
-
-            tft.setCursor(96, 262);
-            tft.print(g_results.flightTime, 2);
-            tft.println(" ");
+            mainWindowShowResults(g_results);
         }
     }
 }
