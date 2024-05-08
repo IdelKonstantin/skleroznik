@@ -5,6 +5,7 @@
 #include "./inc/settings_keeper.h"
 #include "./inc/meteo_module.h"
 #include "./inc/wind_director.h"
+#include "./inc/marker_director.h"
 #include "./inc/energy_worker.h"
 #include "./inc/trajectory_solver_API.h"
 
@@ -15,6 +16,7 @@ configKeeper cfgKeeper;
 meteoModule meteo;
 energyWorker energy;
 windDirector windDirection;
+markerDirector markerPosition;
 
 /****************************** GLOBAL STRUCTS ***************************/
 Bullet g_bullet{};

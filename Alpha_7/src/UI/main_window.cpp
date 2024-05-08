@@ -1,10 +1,12 @@
 #include "../../inc/main_window.h"
+#include "../../inc/settings_window.h"
 #include "../../inc/keys_names.h"
 #include "../../inc/meteo_module.h"
 #include "../../inc/TFT_worker.h"
 #include "../../inc/settings_keeper.h"
 #include "../../inc/input_utils.h"
 #include "../../inc/wind_director.h"
+#include "../../inc/BC_windows.h"
 
 #include "../../inc/trajectory_solver_API.h"
 #include "../../inc/trajectory_solver.h"
@@ -208,7 +210,7 @@ namespace UI {
         inline void mainWindowShowVoltage() {
 
             tft.setCursor(202, 2);
-            tft.println(3.12, 1);//TODO analogRead bla-bla        
+            tft.println(4.2, 1);//TODO analogRead bla-bla        
         }
     }    
 }
@@ -233,7 +235,14 @@ void UI::main_window::worker() {
 
         } else if (key == RIGHT_KEY) {
             
-            //Data
+            UIwindow::builder::makeWindow()
+                .setSetup(UI::settings_window::setup)
+                .setDrawBody(UI::settings_window::drawBody)
+                .setDrawCanvas(UI::settings_window::drawCanvas)
+                .setMarkers(UI::settings_window::drawMarker)
+                .setWorker(UI::settings_window::worker)
+                .build()
+            .start();
             break;
 
         } else if (key == UP_KEY) {
