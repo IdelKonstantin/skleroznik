@@ -1,8 +1,12 @@
-#include "../../inc/settings_window.h"
 #include "../../inc/keys_names.h"
 #include "../../inc/TFT_worker.h"
 #include "../../inc/input_utils.h"
 #include "../../inc/marker_director.h"
+#include "../../inc/BC_windows.h"
+#include "../../inc/settings_window.h"
+#include "../../inc/about_window.h"
+#include "../../inc/wifi_window.h"
+#include "../../inc/bullet_db_window.h"
 
 #include <vector>
 #include <Keypad.h>
@@ -32,6 +36,17 @@ namespace UI {
             "About device"
         };
     }
+
+    enum {
+
+        BULLET_DB,
+        RIFLE_DB,
+        MILDOT,
+        RANGECARD,
+        SETTINGS,
+        WIFI,
+        ABOUT
+    };
 }
 
 void UI::settings_window::setup() {
@@ -97,7 +112,16 @@ namespace UI {
             markerPosition.getMarkerIndex() * UI::settings_window::fontVSize);
             
             tft.println(UI::settings_window::menuNames.at(markerPosition.getMarkerIndex()));
-            delay(1000);
+            delay(500);
+        }
+
+        void redrawWindowAndMarker(int16_t index) {
+            markerPosition.setMarkerIndex(index);
+            markerPosition.setMarkerMaxLines(UI::settings_window::menuNames.size());
+            UI::settings_window::setup();
+            UI::settings_window::drawBody();
+            UI::settings_window::drawCanvas();
+            markerPosition.drawMarker();
         }
     }
 }
@@ -109,13 +133,68 @@ void UI::settings_window::worker() {
         auto key = keypad.getKey();
 
         if (key == RIGHT_KEY) {
-            return;
+            break;
 
         } else if (key == LEFT_KEY || key == OK_KEY) {
             
             UI::settings_window::printMenuLineRead();
 
-            //TODO: впилить обработчики окон
+            switch(markerPosition.getMarkerIndex()) {
+
+                case BULLET_DB:
+                    UIwindow::builder::makeWindow()
+                        .setSetup(UI::bullet_db_window::setup)
+                        .setDrawBody(UI::bullet_db_window::drawBody)
+                        .setDrawCanvas(UI::bullet_db_window::drawCanvas)
+                        .setMarkers(UI::bullet_db_window::drawMarker)
+                        .setWorker(UI::bullet_db_window::worker)
+                        .build()
+                    .start();
+                    UI::settings_window::redrawWindowAndMarker(BULLET_DB);
+                    break;
+
+                case RIFLE_DB: 
+                    //
+                    UI::settings_window::redrawWindowAndMarker(RIFLE_DB);
+                    break;
+
+                case MILDOT:
+                    //
+                    UI::settings_window::redrawWindowAndMarker(MILDOT);
+                    break;
+
+                case RANGECARD:
+                    //
+                    UI::settings_window::redrawWindowAndMarker(RANGECARD);
+                    break;
+
+                case SETTINGS:
+                    //
+                    UI::settings_window::redrawWindowAndMarker(SETTINGS);
+                    break;
+
+                case WIFI:
+                    UIwindow::builder::makeWindow()
+                        .setSetup(UI::wifi_window::setup)
+                        .setDrawBody(UI::wifi_window::drawBody)
+                        .setDrawCanvas(UI::wifi_window::drawCanvas)
+                        .setWorker(UI::wifi_window::worker)
+                        .build()
+                    .start();
+                    UI::settings_window::redrawWindowAndMarker(WIFI);
+                    break;
+
+                case ABOUT:
+                    UIwindow::builder::makeWindow()
+                        .setSetup(UI::about_window::setup)
+                        .setDrawBody(UI::about_window::drawBody)
+                        .setDrawCanvas(UI::about_window::drawCanvas)
+                        .setWorker(UI::about_window::worker)
+                        .build()
+                    .start();
+                    UI::settings_window::redrawWindowAndMarker(ABOUT);
+                    break;
+            }
 
         } else if (key == UP_KEY) {
             markerPosition.upMarker();

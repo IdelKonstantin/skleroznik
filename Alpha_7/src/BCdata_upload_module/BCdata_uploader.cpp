@@ -2,9 +2,13 @@
 #include "../../inc/device_info.h"
 #include "../../inc/settings_keeper.h"
 #include "../../inc/energy_worker.h"
+#include "../../inc/keys_names.h"
+
+#include <Keypad.h>
 
 extern configKeeper cfgKeeper;
 extern energyWorker energy;
+extern Keypad keypad;
 
 dataUploader::dataUploader() {
 
@@ -257,7 +261,12 @@ void dataUploader::initServer() {
 
 void dataUploader::processRESTAPIRequests() {
 
-	while(m_canWork) {	
+	while(m_canWork) {
+
+		if(keypad.getKey() == RIGHT_KEY) {
+			finishProcessing();
+		}
+
 		m_server.handleClient();
 		m_ftp.handleFTP();
 		ElegantOTA.loop();

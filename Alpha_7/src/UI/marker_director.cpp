@@ -30,7 +30,7 @@ void markerDirector::downMarker() {
 
 	eraseMarker();
 	m_markerIndex += 1;
-	m_markerIndex = m_markerIndex > m_maxLines - 1 ? 0 : m_markerIndex;
+	m_markerIndex = m_markerIndex > (m_maxLines - 1) ? 0 : m_markerIndex;
 	drawMarker();
 }
 
@@ -38,10 +38,18 @@ void markerDirector::upMarker() {
 
 	eraseMarker();
 	m_markerIndex -= 1;
-	m_markerIndex = m_markerIndex < 0 ? m_maxLines - 1 : m_markerIndex;
+	m_markerIndex = m_markerIndex < 0 ? (m_maxLines - 1) : m_markerIndex;
 	drawMarker();
 }
 
 uint16_t markerDirector::getMarkerIndex() const {
 	return m_markerIndex;
+}
+
+void markerDirector::setMarkerIndex(int16_t index) {
+	m_markerIndex = index;
+}
+
+void markerDirector::setMarkerMaxLines(uint16_t maxLines) {
+	m_maxLines = maxLines;
 }

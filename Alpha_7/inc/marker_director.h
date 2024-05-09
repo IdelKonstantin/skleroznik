@@ -18,7 +18,6 @@ private:
 	uint16_t m_topMargin;
 
 	void eraseMarker() const;
-	void drawMarker() const;
 
 public:
 	markerDirector();
@@ -27,6 +26,9 @@ public:
 	void downMarker();
 	void upMarker();
 	uint16_t getMarkerIndex() const;
+	void drawMarker() const;
+	void setMarkerIndex(int16_t index);
+	void setMarkerMaxLines(uint16_t maxLines);
 };
 
 #endif /* _BC_MARKER_DIRECTOR_H_ */

@@ -230,11 +230,10 @@ void UI::main_window::worker() {
 
         if (key == LEFT_KEY) {
             
-            //BC
+            //TODO: BC
             break;
 
         } else if (key == RIGHT_KEY) {
-            
             UIwindow::builder::makeWindow()
                 .setSetup(UI::settings_window::setup)
                 .setDrawBody(UI::settings_window::drawBody)
