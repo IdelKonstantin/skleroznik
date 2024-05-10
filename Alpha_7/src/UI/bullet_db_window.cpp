@@ -3,6 +3,7 @@
 #include "../../inc/marker_director.h"
 #include "../../inc/BC_windows.h"
 #include "../../inc/bullet_db_window.h"
+#include "../../inc/bullet_window.h"
 #include "../../inc/settings_keeper.h"
 
 #include <vector>
@@ -34,11 +35,15 @@ void UI::bullet_db_window::setup() {
     tft.setRotation(2);
     tft.fillScreen(ILI9341_BLACK);
     tft.setTextColor(ILI9341_WHITE, ILI9341_BLACK);
-    tft.setTextSize(2);
 }
 
 void UI::bullet_db_window::drawBody() {
     
+    tft.setTextSize(3);
+    tft.setCursor(57, 15);
+    tft.println(F("BULLETS"));
+    tft.setTextSize(2);
+
     bulletNames.clear();
 
     auto file = SPIFFS.open(BULLETS_DATAFILE, "r");
@@ -123,16 +128,18 @@ void UI::bullet_db_window::worker() {
 
         } else if (key == OK_KEY) {
             UI::bullet_db_window::printBulletNameRead();
-
-            //Выбрать винтовку, сохранить в конфиггипере и 
-            //и изменить 
+            cfgKeeper.selectBulletWithIndex(markerPosition.getMarkerIndex());
             break;
 
         } else if (key == LEFT_KEY) {
-            UI::bullet_db_window::printBulletNameRead();
-            
-            //TODO:Вставить окно с инфой
-            
+            UI::bullet_db_window::printBulletNameRead();    
+            UIwindow::builder::makeWindow()
+                .setSetup(UI::bullet_window::setup)
+                .setDrawBody(UI::bullet_window::drawBody)
+                .setDrawCanvas(UI::bullet_window::drawCanvas)
+                .setWorker(UI::bullet_window::worker)
+                .build()
+            .start();
             UI::bullet_db_window::redrawWindow();
 
         } else if (key == UP_KEY) {

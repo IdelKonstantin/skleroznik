@@ -7,6 +7,7 @@
 #include "../../inc/about_window.h"
 #include "../../inc/wifi_window.h"
 #include "../../inc/bullet_db_window.h"
+#include "../../inc/rifle_db_window.h"
 
 #include <vector>
 #include <Keypad.h>
@@ -154,22 +155,29 @@ void UI::settings_window::worker() {
                     break;
 
                 case RIFLE_DB: 
-                    //
+                    UIwindow::builder::makeWindow()
+                        .setSetup(UI::rifle_db_window::setup)
+                        .setDrawBody(UI::rifle_db_window::drawBody)
+                        .setDrawCanvas(UI::rifle_db_window::drawCanvas)
+                        .setMarkers(UI::rifle_db_window::drawMarker)
+                        .setWorker(UI::rifle_db_window::worker)
+                        .build()
+                    .start();
                     UI::settings_window::redrawWindowAndMarker(RIFLE_DB);
                     break;
 
                 case MILDOT:
-                    //
+                    //TODO:
                     UI::settings_window::redrawWindowAndMarker(MILDOT);
                     break;
 
                 case RANGECARD:
-                    //
+                    //TODO:
                     UI::settings_window::redrawWindowAndMarker(RANGECARD);
                     break;
 
                 case SETTINGS:
-                    //
+                    //TODO:
                     UI::settings_window::redrawWindowAndMarker(SETTINGS);
                     break;
 
