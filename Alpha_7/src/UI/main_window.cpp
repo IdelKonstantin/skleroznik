@@ -1,5 +1,6 @@
 #include "../../inc/main_window.h"
 #include "../../inc/settings_window.h"
+#include "../../inc/BC_input_window.h"
 #include "../../inc/keys_names.h"
 #include "../../inc/meteo_module.h"
 #include "../../inc/TFT_worker.h"
@@ -228,9 +229,15 @@ void UI::main_window::worker() {
 
         auto key = keypad.getKey();
 
-        if (key == LEFT_KEY) {
-            
-            //TODO: BC
+        if (key == LEFT_KEY) {   
+            UIwindow::builder::makeWindow()
+                .setSetup(UI::BC_input_window::setup)
+                .setDrawBody(UI::BC_input_window::drawBody)
+                .setDrawCanvas(UI::BC_input_window::drawCanvas)
+                .setMarkers(UI::BC_input_window::drawMarker)
+                .setWorker(UI::BC_input_window::worker)
+                .build()
+            .start();
             break;
 
         } else if (key == RIGHT_KEY) {
