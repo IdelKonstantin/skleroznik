@@ -69,6 +69,9 @@
 Динамический анализ===================================================
 
 	valgrind --leak-check=full ./a.out
+	
+	Adress sanitizer:
+	g++ profiling_static.cpp -fsanitize=address -O0 -o test
 
 Профилировка==========================================================
 
