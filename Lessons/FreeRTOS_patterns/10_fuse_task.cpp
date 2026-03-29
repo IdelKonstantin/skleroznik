@@ -2,9 +2,9 @@
 
 enum {
 
-	TASK1_KICK_1 = 0,
-	TASK1_KICK_2,
-	TASK1_KICK_3
+	TASK_KICK_1 = 0,
+	TASK_KICK_2,
+	TASK_KICK_3
 };
 
 ////////////////////////////////////////////////////////////////////////
@@ -15,7 +15,7 @@ void task_1(void *pvParameters) {
 
 		// Симуляция полезной работы тут...
 
-		watchdog_kick(TASK1_KICK_1);		//Пинок в предохранитель
+		watchdog_kick(TASK_KICK_1);		//Пинок в предохранитель
 		vTaskDelay(pdMS_TO_TICKS(5000));
 	}
 }
@@ -26,7 +26,7 @@ void task_2(void *pvParameters) {
 
 		// Симуляция полезной работы тут...
 
-		watchdog_kick(TASK1_KICK_2);		//Пинок в предохранитель
+		watchdog_kick(TASK_KICK_2);		//Пинок в предохранитель
 		vTaskDelay(pdMS_TO_TICKS(3000));
 	}
 }
@@ -37,7 +37,7 @@ void task_3(void *pvParameters) {
 
 		// Симуляция полезной работы тут...
 
-		watchdog_kick(TASK1_KICK_3);		//Пинок в предохранитель
+		watchdog_kick(TASK_KICK_3);		//Пинок в предохранитель
 		vTaskDelay(pdMS_TO_TICKS(1000));
 	}
 }
@@ -89,16 +89,8 @@ void watchdog_task(void *pvParameters) {
 				TickType_t diff = now - watched_tasks[i].last_tick;
 
 				if (diff > WATCHDOG_TIMEOUT_TICKS) {
-
-					watched_tasks[i].name,
-					(int)pdTICKS_TO_MS(diff),
-					(int)pdTICKS_TO_MS(WATCHDOG_TIMEOUT_TICKS);
 					all_alive = false;
 
-				} else {
-
-					watched_tasks[i].name,
-					(int)pdTICKS_TO_MS(diff);
 				}
 			}
 		}
@@ -119,7 +111,7 @@ void watchdog_task(void *pvParameters) {
 void main(void) {
 
     // Инициализируем структуру задач для контроля
-    watched_tasks[0] = (task_watchdog_item_t){
+    watched_tasks[0] = (task_watchdog_item_t) {
         .handle = NULL,
         .last_tick = 0,
         .is_alive = false,
@@ -147,7 +139,6 @@ void main(void) {
     if (watched_tasks[0].handle == NULL || watched_tasks[1].handle == NULL || watched_tasks[2].handle == NULL) {
         
         NVIC_SystemReset();
-        return;
     }
 
     // Инициализируем время последнего пинка (текущее время, чтобы не сработал ложный сброс)
